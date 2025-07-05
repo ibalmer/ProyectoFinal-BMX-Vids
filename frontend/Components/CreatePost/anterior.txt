@@ -1,0 +1,117 @@
+import { useContext, useState } from "react";
+import { PostsContext } from "../../Providers/PostProvider/PostContext";
+
+export function CreatePost() {
+    const { createPost } = useContext(PostsContext);
+
+    const [newPost, setNewpost] = useState({
+        title: '',
+        description: '',
+        content: '',
+        video_link: '', 
+        tags: '',
+        author: '',
+        user_id: '', 
+        type_id: ''  
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        setNewpost(prev => ({
+            ...prev,
+            [name]: name === "type_id" || name === "user_id" ? parseInt(value) : value
+        }));
+    };
+
+    const sendData = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await createPost(newPost);
+            console.log("Post creado:", response);
+        } catch (error) {
+            console.error("Error al crear el post:", error);
+        }
+    };
+
+    return (
+        <>
+            <h2>Crear Post</h2>
+            <form onSubmit={sendData}>
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Título"
+                    onChange={handleChange}
+                    value={newPost.title}
+                    required
+                />
+
+                <textarea
+                    name="description"
+                    placeholder="Descripción"
+                    rows="4"
+                    onChange={handleChange}
+                    value={newPost.description}
+                    required
+                />
+
+                <textarea
+                    name="content"
+                    placeholder="Contenido"
+                    rows="4"
+                    onChange={handleChange}
+                    value={newPost.content}
+                />
+
+                <input
+                    type="url"
+                    name="video_link"
+                    placeholder="Enlace del video (YouTube)"
+                    onChange={handleChange}
+                    value={newPost.video_link}
+                />
+
+                <input
+                    type="text"
+                    name="tags"
+                    placeholder="Etiquetas (separadas por comas)"
+                    onChange={handleChange}
+                    value={newPost.tags}
+                />
+
+                <input
+                    type="text"
+                    name="author"
+                    placeholder="Autor"
+                    onChange={handleChange}
+                    value={newPost.author}
+                />
+
+                <input
+                    type="number"
+                    name="user_id"
+                    placeholder="ID de usuario"
+                    onChange={handleChange}
+                    value={newPost.user_id}
+                    required
+                />
+
+                <select
+                    name="type_id"
+                    value={newPost.type_id}
+                    onChange={handleChange}
+                    required
+                >
+                    <option value="">Seleccionar tipo de video</option>
+                    <option value="1">Full Video</option>
+                    <option value="2">Web Video</option>
+                    <option value="3">Event Video</option>
+                </select>
+
+                <button type="submit">Crear Post</button>
+            </form>
+        </>
+    );
+}

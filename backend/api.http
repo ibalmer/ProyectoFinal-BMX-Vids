@@ -1,0 +1,115 @@
+//////////////////////////////////////
+//////////// POSTEOS ////////////////
+
+### POR ID ###
+GET http://localhost:3048/post/88
+
+### BUSCAR POR FILTRO ###
+GET http://localhost:3048/posts?filter=santiago
+
+### PAGINACION ###
+GET http://localhost:3048/posts/event%20videos
+
+
+### CREAR POST ###
+POST http://localhost:3048/post
+Content-Type: application/json; charset=utf-8
+
+{
+  "title": "GUERRA BMX - Seamus McKeon Moose Frame Promo",
+  "description": "We're proud to present the long-awaited release of the Moose, Seamus McKeon's signature Guerra frame. Now available at veinbmx.com and finer dealers everywhere. http://www.veinbmx.com/bmx-frames/Gue... For specs and photos, visit www.guerrabmx.com.",
+  "content": "Filmed by Phil Jones, Zachery Rogers, Logan Derberry & Stew Johnson. Edited by Logan Derberry & Seamus McKeon.",
+  "video_link": "https://www.youtube.com/watch?v=kN61xIhkwLg",
+  "tags": "guerra, moose, frame",
+  "author": "GUERRA",
+  "user_id": 1,
+  "type_id": 2
+}
+### ELIMINAR POST POR ID ###
+DELETE http://localhost:3048/post/138
+
+### ACTUALIZAR POST POR ID ###
+PUT http://localhost:3048/post/55
+Content-Type: application/json; charset=utf-8
+
+{
+  "title": "GUERRA BMX - Seamus McKeon" ,
+  "description": "We're proud to present the long-awaited release of the Moose, Seamus McKeon's signature Guerra frame. Now available at veinbmx.com and finer dealers everywhere. http://www.veinbmx.com/bmx-frames/Gue... For specs and photos, visit www.guerrabmx.com.",
+  "content": "Filmed by Phil Jones, Zachery Rogers, Logan Derberry & Stew Johnson. Edited by Logan Derberry & Seamus McKeon.",
+  "video_link": "https://www.youtube.com/watch?v=kN61xIhkwLg",
+  "tags": "guerra, moose, frame",
+  "author": "GUERRA",
+  "user_id": 1,
+  "type_id": 2
+}
+### MODIFICAR POST POR ID ###
+PATCH http://localhost:3048/post/138
+Content-Type: application/json; charset=utf-8
+
+{
+    "title":"FOCUS - Gaspar Guendulain",
+    "tags":"bicicleta,fernet" 
+}
+
+
+//////////////////////////////////////
+//////////// USUARIOS ////////////////
+
+### Obtener todos los usuarios (con o sin filtro)
+GET http://localhost:3048/users?limit=20&offset=0
+
+### Obtener usuarios con filtro
+GET http://localhost:3048/users?filter=ivan&limit=10&offset=0
+
+### Obtener usuario por ID
+GET http://localhost:3048/users/1
+
+### Crear un nuevo usuario
+POST http://localhost:3048/users
+Content-Type: application/json
+
+{
+  "user_name": "juanperez",
+  "name": "Juan",
+  "last_name": "Pérez",
+  "user_password": "contrasena123",
+  "email": "juan@example.com",
+  "user_type": "user"
+}
+
+### Login ###
+
+POST http://localhost:3048/users/login
+Content-Type: application/json
+
+{
+  "email": "ivan@nuevo.com",
+  "user_password": "mituca10"
+}
+
+### Actualizar usuario completamente (PUT)
+PUT http://localhost:3048/users/1
+Content-Type: application/json
+
+{
+  "user_name": "ibalmer",
+  "name": "Ivan",
+  "last_name": "Balmer",
+  "user_password": "mituca10",
+  "email": "ivan@nuevo.com",
+  "user_type": "admin"
+}
+
+### Modificar parcialmente un usuario (PATCH)
+PATCH http://localhost:3048/users/1
+Content-Type: application/json
+
+{
+  "email": "ivan@balmersin.com"
+}
+
+### Eliminar un usuario
+DELETE http://localhost:3048/users/4
+
+
+

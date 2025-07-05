@@ -1,0 +1,14 @@
+.header{
+    display: flex;
+    align-items: center;
+} 
+ul{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
