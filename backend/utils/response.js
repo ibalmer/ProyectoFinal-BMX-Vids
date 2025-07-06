@@ -13,21 +13,18 @@ export const CreateResponse = (method, resourse, data, total = null) => {
                 code: data.length > 0 ? 200 : 404,
                 data,
                 errors,
-                ...(total !== null && { total }) 
+                ...(total !== null && { total })
             };
             break;
 
 
         case 'POST':
-
-            if (!data) {
-                errors.push(`No se pudo crear el ${resourse}`);
-            }
+            console.log(data)
             response = {
-                status: data ? 'created' : 'bad request',
-                code: data ? 201 : 400,
-                data: data ? data : null,
-                errors,
+                status: data.status,
+                code: data.code,
+                data: data.data,
+                errors: data.errors
             }
 
             break;
@@ -84,7 +81,7 @@ export const CreateResponse = (method, resourse, data, total = null) => {
         case 'DELETE':
 
             if (data[0].affectedRows == 0) {
-                errors.push(`No se pudo actualizar el ${resourse}`);
+                errors.push(`No se pudo eliminar el ${resourse}`);
             }
             response = {
                 status: data[0].affectedRows > 0 ? 'acepted' : 'bad request',

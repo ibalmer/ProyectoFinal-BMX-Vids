@@ -72,7 +72,6 @@ export function Searcher() {
   }, [filter, offset]);
 
   useEffect(() => {
-    // Si cambia el filtro, reinicio offset
     setOffset(0);
   }, [filter]);
 

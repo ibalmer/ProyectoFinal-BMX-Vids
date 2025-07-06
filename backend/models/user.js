@@ -1,5 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import mysql from 'mysql2/promise';
-import { email } from 'zod/v4';
+import bcrypt from 'bcrypt';
 
 const config = {
     host: 'localhost',
@@ -94,6 +97,11 @@ export class UserModel {
     }
 
     static async Post(body) {
+
+        const saltRounds = parseInt(process.env.BCRYPTROUNDS) 
+
+        const hashedPassword = await bcrypt.hash(body.user_password, saltRounds);
+
         const [result] = await connection.query(
             `INSERT INTO user (user_name, name, last_name, user_password, email, user_type)
          VALUES (?, ?, ?, ?, ?, ?)`,
@@ -101,7 +109,7 @@ export class UserModel {
                 body.user_name,
                 body.name,
                 body.last_name,
-                body.user_password,
+                hashedPassword,
                 body.email,
                 body.user_type
             ]

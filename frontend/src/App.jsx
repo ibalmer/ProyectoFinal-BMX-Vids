@@ -1,10 +1,10 @@
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { PostsProvider } from '../Providers/PostProvider/PostsProvider';
 import { Posts } from '../Components/Posts/Posts';
 import { Post } from '../Components/Post/Post';
 import { Category } from '../Components/Categories/Categories';
 import { Searcher } from '../Components/Searcher/Searcher';
-import { InputSearcher } from '../Components/Searcher/InputSearcher/InputSearcher';
+import { Header } from '../Components/Header/Header';
 import { CreatePost
   
  } from '../Components/CreatePost/CreatePost';
@@ -16,39 +16,7 @@ function App() {
   return (
     <>
       <PostsProvider>
-        <div className='header'>
-          <Link to={'/posts'}>
-            <h3>BMX Vids</h3>
-          </Link>
-          <nav>
-            <ul>
-              <li>
-                <Link to={`/full videos`}>
-                  <h5>Full Videos</h5>
-                </Link>
-              </li>
-              <li>
-                <Link to={`/web videos`}>
-                  <h5>Web Videos</h5>
-                </Link>
-              </li>
-              <li>
-                <Link to={`/event videos`}>
-                  <h5>Event Videos</h5>
-                </Link>
-              </li>
-              <li>
-                <Link to={`/create`}>
-                  <h5>Crear Post</h5>
-                </Link>
-              </li>
-              <li style={{ display: "flex", alignItems: "center" }}>
-                <InputSearcher />
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <Link></Link>
+        <Header/>
         <Routes>
           <Route path='/:param' element={<Category />}></Route>
           <Route path="/search" element={<Searcher />} />

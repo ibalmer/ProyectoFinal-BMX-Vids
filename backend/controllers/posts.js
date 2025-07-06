@@ -43,11 +43,23 @@ export class PostController {
         const validationBody = postSchema.safeParse(data);
 
         if (!validationBody.success) {
-
-            return CreateResponse('POST', 'post', null);
+            const body = {
+                status: 'bad request',
+                code: 400,
+                data: [],
+                errors: 'No se pudo crear el post'
+            }
+            return CreateResponse('POST', 'post', body);
         }
+        
+        const response = await PostModel.Post(data);
 
-        const body = await PostModel.Post(data);
+        const body = {
+            status: 'created',
+            code: 201,
+            data: response,
+            errors: []
+        }
 
         return CreateResponse('POST', 'post', body);
     }
