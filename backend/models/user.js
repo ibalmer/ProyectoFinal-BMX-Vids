@@ -103,18 +103,17 @@ export class UserModel {
         const hashedPassword = await bcrypt.hash(body.user_password, saltRounds);
 
         const [result] = await connection.query(
-            `INSERT INTO user (user_name, name, last_name, user_password, email, user_type)
-         VALUES (?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO user (user_name, name, last_name, user_password, email)
+         VALUES (?, ?, ?, ?, ? )`,
             [
                 body.user_name,
                 body.name,
                 body.last_name,
                 hashedPassword,
-                body.email,
-                body.user_type
+                body.email
             ]
         );
-
+        
         return [result, { username: body.user_name }];
     }
 

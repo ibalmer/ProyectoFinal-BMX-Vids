@@ -1,38 +1,25 @@
-/* import { useContext } from "react";
-import { PostsContext } from "../../Providers/PostProvider/PostContext";
-import { Link } from "react-router-dom";
-
-export function Posts() {
-    const { posts } = useContext(PostsContext);
-    console.log('los posts', posts)
-    return (
-        <>
-            <h2>Posts</h2>
-            {posts && posts?.data?.map((item) => (
-                <Link key={item.id} to={`/posts/${item.id}`}>
-                    <h5>{item.title}</h5>
-                </Link>
-            ))}
-        </>
-    );
-};
- */
-
 import { useContext, useEffect, useState } from "react";
-import { PostsContext } from "../../Providers/PostProvider/PostContext";
-import { Link } from "react-router-dom";
+import { PostsContext } from "../../../Providers/Post/PostContext";
+import { useParams, Link } from "react-router-dom";
 
-export function Posts() {
-    const { posts, getPosts } = useContext(PostsContext);
+export function Category() {
+    const { param } = useParams();
+    const { getPostsByParams } = useContext(PostsContext);
 
-    const limit = 10;
+    const [category, setCategory] = useState([]);
     const [offset, setOffset] = useState(0);
+    const limit = 10;
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
-        getPosts({ limit, offset });
-    }, [offset]);
+        const fetchCategory = async () => {
+            const response = await getPostsByParams(param, { limit, offset });
+            setCategory(response.data || []);
+            setTotal(response.total || 0);
+        };
+        fetchCategory();
+    }, [param, offset]);
 
-    const total = posts?.total || 0;
     const currentPage = Math.floor(offset / limit) + 1;
     const totalPages = Math.ceil(total / limit);
 
@@ -42,13 +29,13 @@ export function Posts() {
 
     return (
         <>
-            <h2>Posts</h2>
+            <h3>{param}</h3>
 
-            {posts?.data?.map((item) => (
+            {category.length > 0 ? category.map((item) => (
                 <Link key={item.id} to={`/post/${item.id}`}>
                     <h5>{item.title}</h5>
                 </Link>
-            ))}
+            )) : <p>No hay resultados.</p>}
 
             <div style={{ marginTop: '1rem' }}>
                 <button

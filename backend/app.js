@@ -4,6 +4,7 @@ import cors from 'cors';
 import { PostsRouter } from './routes/posts.js';
 import { PostRouter } from './routes/post.js';
 import { UserRouter } from './routes/user.js';
+import { CommentsRouter } from './routes/comments.js'
 
 
 // CONFIGURACION DE VARIABLES DE ENTORNO//
@@ -40,6 +41,7 @@ app.get('/', (req, res) => {
 app.use('/posts', PostsRouter)
 app.use('/post', PostRouter)
 app.use('/users', UserRouter)
+app.use('/comments', CommentsRouter)
 
 
 const server = app.listen(process.env.PORT, () => {

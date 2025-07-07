@@ -33,8 +33,7 @@ export class UserController {
     static async Post(data) {
 
         const validationBody = userSchema.safeParse(data);
-        console.log(validationBody.success);
-
+        
         if (!validationBody.success) {
             const body = {
                 status: 'bad request',
@@ -93,7 +92,6 @@ export class UserController {
 
     static async PostLogin(data) {
         const dbUser = await UserModel.GetByEmail(data.email);
-        console.log(dbUser);
 
         if (!dbUser || dbUser.length === 0) {
             const body = {
@@ -118,6 +116,7 @@ export class UserController {
         }
 
         const loginUser = {
+            id: dbUser[0].id,
             user_name: dbUser[0].user_name,
             name: dbUser[0].name,
             last_name: dbUser[0].last_name,

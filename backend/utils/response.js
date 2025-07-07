@@ -18,8 +18,7 @@ export const CreateResponse = (method, resourse, data, total = null) => {
             break;
 
 
-        case 'POST':
-            console.log(data)
+        case 'POST':  
             response = {
                 status: data.status,
                 code: data.code,

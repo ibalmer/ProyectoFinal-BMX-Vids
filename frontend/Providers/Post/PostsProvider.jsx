@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { PostsContext } from "./PostContext";
+import { useState } from "react";
+import { PostsContext } from './PostContext'
 import axios from "axios";
 
 
@@ -8,9 +8,6 @@ export function PostsProvider({ children }) {
     const [posts, setPosts] = useState()
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        getPosts();
-    }, []);
 
     const getPosts = async ({ limit = 10, offset = 0 }) => {
         try {
@@ -26,15 +23,15 @@ export function PostsProvider({ children }) {
     };
 
     const getPostByParams = async (param) => {
-    
-            try {
-                const res = await axios.get(`http://localhost:3048/post/${param}`)
-                console.log(res)
-                return res
-            } catch (error) {
-                console.error('Error al cargar el post:', error)
-            }
-        };  
+
+        try {
+            const res = await axios.get(`http://localhost:3048/post/${param}`)
+
+            return res
+        } catch (error) {
+            console.error('Error al cargar el post:', error)
+        }
+    };
     const getPostsByParams = async (param, { limit = 10, offset = 0 }) => {
         try {
             const res = await axios.get(`http://localhost:3048/posts/${param}`, {
@@ -45,19 +42,8 @@ export function PostsProvider({ children }) {
             console.error('Error al cargar la categoría:', error);
             return { data: [], total: 0 };
         }
-    }; 
-    
+    };
 
-    /* const getPostsByFilters = async (filter) => {
-        try {
-            const res = await axios.get('http://localhost:3048/posts', {
-                params: { filter }
-            });
-            return res.data.data;
-        } catch (error) {
-            console.error('Error al cargar los posts:', error);
-        }
-    }; */
     const getPostsByFilters = async (filter, { limit = 10, offset = 0 }) => {
         try {
             const res = await axios.get('http://localhost:3048/posts', {
@@ -74,7 +60,6 @@ export function PostsProvider({ children }) {
         try {
             const res = await axios.post("http://localhost:3048/post", newPost);
 
-            console.log('la response', res)
             if (!res.data || typeof res.data !== "object") {
                 console.warn("La respuesta no contiene un post válido:", res.data);
                 return;
@@ -87,6 +72,15 @@ export function PostsProvider({ children }) {
         }
     };
 
+    const deletePostById = async (id) => {
+        try {
+            const res = await axios.delete(`http://localhost:3048/post/${id}`)
+            return res
+        }catch (error) {
+            console.error('Error al cargar el post:', error)
+        }
+    };
+
     return (
         <PostsContext.Provider value={{
             posts,
@@ -95,7 +89,8 @@ export function PostsProvider({ children }) {
             getPostsByParams,
             getPostByParams,
             getPostsByFilters,
-            createPost
+            createPost,
+            deletePostById
         }}>
             {children}
         </PostsContext.Provider>

@@ -17,7 +17,6 @@ export const userSchema = z.object({
     .min(8, 'La contraseña debe tener al menos 8 caracteres')
     .max(20, 'La contraseña no puede tener más de 20 caracteres'),
 
-  email: z.string().email('Email inválido'),
+  email: z.string().email('Email inválido')
 
-  user_type: z.enum(['user', 'admin']),
 });

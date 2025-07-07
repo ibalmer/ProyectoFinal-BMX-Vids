@@ -1,0 +1,8 @@
+consulta random para carrousel en home en caso de no usar los ultimo 5 por timestamp
+
+SELECT *
+FROM tu_tabla
+ORDER BY RAND()
+LIMIT 5;
+
+////////////////////////

@@ -1,0 +1,77 @@
+:root {
+
+    /* --------------------- */
+
+    --gray-color: #7D7D7D;
+    --red-pk-color: #FF1C1C;
+    --normal-color: #A0A2A0;
+    --fighting-color: #FF8100;
+    --flying-color: #82BAEF;
+    --poison-color: #922FCC;
+    --ground-color: #92501B;
+    --rock-color: #B0AA82;
+    --bug-color: #92A212;
+    --ghost-color: #703F70;
+    --steel-color: #60A2B9;
+    --fire-color: #E72324;
+    --water-color: #2481EF;
+    --grass-color: #3DA224;
+    --electric-color: #FAC100;
+    --psychic-color: #EF3F7A;
+    --ice-color: #3DD9FF;
+    --dragon-color: #4F60E2;
+    --dark-color: #4F3F3D;
+    --fairy-color: #EF70EF;
+    --button-dex-color: #28AAFE;
+
+    --normal-color-op: #a0a2a0d0;
+    --fighting-color-op: #FF8100d0;
+    --poison-color-op: #922FCCd0;
+    --ground-color-op: #92501Bd0;
+    --rock-color-op: #B0AA82d0;
+    --bug-color-op: #92A212d0;
+    --ghost-color-op: #703F70d0;
+    --steel-color-op: #60A2B9d0;
+    --fire-color-op: #E72324d0;
+    --water-color-op: #2481EFd0;
+    --grass-color-op: #3DA224d0;
+    --electric-color-op: #FAC100d0;
+    --psychic-color-op: #EF3F7Ad0;
+    --ice-color-op: #3DD9FFd0;
+    --dragon-color-op: #4F60E2d0;
+    --dark-color-op: #4F3F3D80;
+    --fairy-color-op: #ef71efd0;
+    --flying-color-op: #82BAEFd0;
+
+    /* --------------------- */
+
+    --radius-1: 4px;
+    --radius-2: 16px;
+    --radius-3: 32px;
+    --radius-4: 40px;
+    --radius-100: 50%;
+
+    /* --------------------- */
+
+    --distance-1:  0.25rem; /* 16px = 1rem */
+    --distance-2:  0.5rem; /* 16px = 1rem */
+    --distance-3:  1rem; /* 16px = 1rem */
+    --distance-4:  2rem; /* 16px = 1rem */
+    --distance-5:  2.5rem; /* 16px = 1rem */
+    --distance-6:  3.75rem; /* 16px = 1rem */
+    --distance-7:  4.375rem; /* 16px = 1rem */
+
+    /* --------------------- */
+
+    --size-1: 1rem;
+    --size-2: 1.25rem;
+    --size-3: 1.5rem;
+    --size-4: 1.65rem;
+    --size-5: 2rem;
+    --size-6: 2.5rem;
+
+    --size-max-1: 2.85rem;
+    --size-max-2: 3.5rem;
+    --size-max-3: 4rem;
+    
+}

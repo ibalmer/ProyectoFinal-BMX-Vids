@@ -1,50 +1,7 @@
-/* import { useContext, useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
-import { PostsContext } from "../../Providers/PostProvider/PostContext";
-
-export function Searcher() {
-  const { getPostsByFilters } = useContext(PostsContext);
-  const [searchParams] = useSearchParams();
-  const filter = searchParams.get("filter");
-
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (filter) {
-      setLoading(true);
-      getPostsByFilters(filter)
-        .then((data) => setResults(data || []))
-        .catch((err) => console.error("Error al buscar:", err))
-        .finally(() => setLoading(false));
-    }
-  }, [filter]);
-
-  if (!filter) return <p>Ingresá un término de búsqueda.</p>;
-
-  return (
-    <div>
-      <h2>Resultados para: "{filter}"</h2>
-      {loading ? (
-        <p>Cargando...</p>
-      ) : results.length > 0 ? (
-        <ul style={{ display: "flex", flexWrap: "wrap" }}>
-          {results.map((post) => (
-            <li key={post.id}>
-              <Link to={`/posts/${post.id}`}>{post.title}</Link>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No se encontraron resultados.</p>
-      )}
-    </div>
-  );
-}; */
 
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { PostsContext } from "../../Providers/PostProvider/PostContext";
+import { PostsContext } from "../../../Providers/Post/PostContext";
 
 export function Searcher() {
   const { getPostsByFilters } = useContext(PostsContext);

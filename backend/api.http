@@ -69,13 +69,13 @@ POST http://localhost:3048/users
 Content-Type: application/json
 
 {
-  "user_name": "juanperezz",
-  "name": "Juan",
-  "last_name": "Pérez",
-  "user_password": "contrasena123",
-  "email": "juan@example.com",
-  "user_type": "user"
+  "email": "jesi@hola.com",
+  "last_name": "juarez",
+  "name": "jesica",
+  "user_name": "jesijesi",
+  "user_password": "lorramones"
 }
+
 
 ### Login ###
 
@@ -83,8 +83,8 @@ POST http://localhost:3048/users/login
 Content-Type: application/json
 
 {
-  "email": "juan@example.com",
-  "user_password": "contrasena123"
+  "email": "leonardo_garcia@ramon.com",
+  "user_password": "lorramones"
 }
 
 ### Actualizar usuario completamente (PUT)
@@ -111,5 +111,24 @@ Content-Type: application/json
 ### Eliminar un usuario
 DELETE http://localhost:3048/users/1
 
+
+//////////////////////////////////////
+////////// COMENTARIOS //////////////
+
+### Obtener comentarios por pots id
+GET http://localhost:3048/comments/61
+
+### Crear comentarios
+POST http://localhost:3048/comments
+Content-Type: application/json
+
+{
+  "user_id": 22, 
+  "post_id": 141,
+  "content": "esta mas loco q las cabras!!!"
+}
+
+### borrar comentarios por pots id
+DELETE  http://localhost:3048/comments/2
 
 
