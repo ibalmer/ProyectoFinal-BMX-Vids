@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { PostsContext } from "../../../Providers/Post/PostContext";
 import { Link } from "react-router-dom";
+import { PostThumbnail } from "../PostThumbnail/PostThumbnail";
+import { MdOutlineArrowForwardIos, MdOutlineArrowBackIos } from "react-icons/md";
+
 
 export function Posts() {
     const { posts, getPosts } = useContext(PostsContext);
 
-    const limit = 10;
+    const limit = 12;
     const [offset, setOffset] = useState(0);
 
     useEffect(() => {
@@ -21,21 +24,24 @@ export function Posts() {
     };
 
     return (
-        <>
-            <h2>Posts</h2>
+        <section className="flex flex-center align-center column">
+            <div className="flex flex-center align-center wrap gap-6">
+                {posts?.data?.map((item) => (
+                    <Link key={item.id} to={`/post/${item.id}`}>
+                        <div>
+                            <PostThumbnail post={item} />
+                        </div>
+                    </Link>
+                ))}
 
-            {posts?.data?.map((item) => (
-                <Link key={item.id} to={`/post/${item.id}`}>
-                    <h5>{item.title}</h5>
-                </Link>
-            ))}
-            
-            <div style={{ marginTop: '1rem' }}>
+            </div>
+            <div className="flex gap-2">
                 <button
                     onClick={() => setOffset(offset - limit)}
                     disabled={offset === 0}
+                    className='street-blue-button'
                 >
-                    Anterior
+                    <MdOutlineArrowBackIos className="size-2 flex flex-center align-center" />
                 </button>
 
                 {Array.from({ length: totalPages }, (_, i) => (
@@ -43,6 +49,7 @@ export function Posts() {
                         key={i}
                         onClick={() => handlePageChange(i + 1)}
                         disabled={currentPage === i + 1}
+                        className="rust-button size-2 flex flex-center align-center"
                     >
                         {i + 1}
                     </button>
@@ -51,10 +58,11 @@ export function Posts() {
                 <button
                     onClick={() => setOffset(offset + limit)}
                     disabled={offset + limit >= total}
+                    className='street-blue-button'
                 >
-                    Siguiente
+                    <MdOutlineArrowForwardIos className="size-2 flex flex-center align-center" />
                 </button>
             </div>
-        </>
+        </section>
     );
 }

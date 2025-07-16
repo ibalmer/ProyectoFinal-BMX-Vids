@@ -57,6 +57,7 @@ export function PostsProvider({ children }) {
     };
 
     const createPost = async (newPost) => {
+        console.log(newPost)
         try {
             const res = await axios.post("http://localhost:3048/post", newPost);
 
@@ -75,6 +76,7 @@ export function PostsProvider({ children }) {
     const deletePostById = async (id) => {
         try {
             const res = await axios.delete(`http://localhost:3048/post/${id}`)
+
             return res
         }catch (error) {
             console.error('Error al cargar el post:', error)

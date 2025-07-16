@@ -59,7 +59,7 @@ export function Post() {
             
             {userAuthenticated.user_type === 'admin' ? (
                 <>
-                    <button onClick={() => deletePost(post.data[0].id)}>Eliminar Post</button>
+                    <button className="dirty-white-submit flex flex-center align-center" onClick={() => deletePost(post.data[0].id)}>Eliminar Post</button>
                     <button>Modificar Post</button>
                     {deleteAlert ? (
                         <div style={{
@@ -69,7 +69,8 @@ export function Post() {
                             marginTop: '.5rem'
                         }}>
                             <h4>El post numero {post.data[0].id} ha sido eliminado</h4>
-                            <button onClick={() => {
+                            <button className="dirty-white-submit flex flex-center align-center"
+                                onClick={() => {
                                 setDeleteAlert(false);
                                 navigate('/')
                             }}>

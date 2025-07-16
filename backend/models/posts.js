@@ -15,7 +15,7 @@ export class PostModel {
 
     static async Get(limit = 10, offset = 0) {
         try {
-            const [posts] = await connection.query('SELECT * FROM post LIMIT ? OFFSET ?', [limit, offset]);
+            const [posts] = await connection.query('SELECT * FROM post ORDER BY post.publish_date DESC LIMIT ? OFFSET ?', [limit, offset]);
             const [[{ total }]] = await connection.query('SELECT COUNT(*) AS total FROM post');
             return { posts, total };
         } catch (error) {
@@ -30,7 +30,9 @@ export class PostModel {
         FROM post
         JOIN type_post ON post.type_id = type_post.id
         WHERE type_post.name = ?
-        LIMIT ? OFFSET ?`;
+        ORDER BY post.publish_date DESC
+        LIMIT ? OFFSET ?;
+        `;
 
         const countQuery = `
         SELECT COUNT(*) AS total

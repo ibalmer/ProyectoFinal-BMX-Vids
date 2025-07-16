@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { PostsRouter } from './routes/posts.js';
 import { PostRouter } from './routes/post.js';
 import { UserRouter } from './routes/user.js';
@@ -15,21 +16,16 @@ const app = express();
 
 //MIDDLEWARE//
 app.use(express.json());
-// deja explicito para todos los textos de entrada el charset utf8//
-/* app.use((req, res, next) => {
-  res.setHeader("Content-Type", "application/json; charset=utf-8");
-  next();
-}); */
+
+//COKIEPARSER//
+app.use(cookieParser());
+
 app.use(
   cors({
     origin: "http://localhost:5173",
+    credentials: true
   })
 );
-
-//PERMISOS CORS PARA EL FRONTEND Y LA API PUBLICA//
-/* app.use(cors({
-    origin: 'http://localhost:5173'
-})); */
 
 app.get('/', (req, res) => {
   res.send(`

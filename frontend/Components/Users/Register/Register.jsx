@@ -78,7 +78,7 @@ export function Register() {
 
 
     return (
-        <>
+        <div className="bg-earth">
             {userAuthenticated.user_type !== 'invitado' ? (
                 <h2>Ya iniciaste sesión</h2>
             ) : (
@@ -160,6 +160,6 @@ export function Register() {
                     </button>
                 </div>
             ) : (null)}
-        </>
+        </div>
     );
 }

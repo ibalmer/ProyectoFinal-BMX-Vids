@@ -25,7 +25,7 @@ export function CreatePost() {
 
         setNewPost(prev => ({
             ...prev,
-            [name]: name === "user_id" ? parseInt(value) : value
+            [name]: name === "user_id" || name === "type_id" ? parseInt(value) : value
         }));
     };
 
@@ -88,7 +88,7 @@ export function CreatePost() {
 
 
     return (
-        <>
+        <div className="bg-copper">
             <h2>Crear Post</h2>
             {userAuthenticated.user_type === 'admin' ? (
                 <form onSubmit={sendData}>
@@ -178,6 +178,6 @@ export function CreatePost() {
             ) : (
                 <h2>No tenes permisos para crear un posteo</h2>
             )}
-        </>
+        </div>
     )
 };

@@ -80,7 +80,7 @@ export function Comments({ id }) {
     };
 
     return (
-        <>
+        <div className="flex column p-2 flex-center align-center gap-3 radius-2 width-content bg-dark-blue p-2 m-top-2 right-0">
             <h1>Comentarios</h1>
             <form onSubmit={sendData}>
                 <textarea
@@ -91,7 +91,7 @@ export function Comments({ id }) {
                     value={newComment.content}
                     required
                 />
-                {userAuthenticated.user_type === 'invitado' ? (
+                {userAuthenticated.user_type != 'user' && userAuthenticated.user_type != 'admin' ? (
                     <h4>Inicia sesion para comentar</h4>
                 ) : (
                     <button type="submit">Comentar</button>
@@ -107,7 +107,7 @@ export function Comments({ id }) {
                         marginTop: '.5rem'
                     }}
                 >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div className="flex column p-2 flex-center align-center gap-3 radius-2 width-content bg-dark-blue p-2 m-top-2 right-0">
                         <div style={{ flex: 1 }}>
                             <h3>{item.user_name}</h3>
                             <p>{item.content}</p>
@@ -136,6 +136,6 @@ export function Comments({ id }) {
                 </div>
             ))
             }
-        </>
+        </div>
     );
 }

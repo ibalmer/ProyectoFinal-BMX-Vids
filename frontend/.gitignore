@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# txt y dotenv
+.env
+pendientes.txt
+backend-sinJWT

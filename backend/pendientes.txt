@@ -6,3 +6,9 @@ ORDER BY RAND()
 LIMIT 5;
 
 ////////////////////////
+modal de sesion
+///////////////////////
+
+
+CORS!!!!! DARLE PERMISO A TODO Y LIMITAR DESDE BACKEND
+
