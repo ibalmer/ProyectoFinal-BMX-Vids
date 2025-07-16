@@ -1,0 +1,5 @@
+// Variables de Entorno//
+
+PORT=3048
+SECRET_KEY_JWT="c7e92adbf4187a96f8d67b4a132e5d2f56a49f0cbd6139f0a3b7c8d4e2f1a8cb"
+BCRYPTROUNDS=10
