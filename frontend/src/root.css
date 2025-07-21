@@ -35,7 +35,7 @@
     /* 16px = 1rem */
 
     /* --------------------- */
-
+    --size-mini: .75rem;
     --size-1: 1rem;
     --size-2: 1.25rem;
     --size-3: 1.5rem;

@@ -1,0 +1,18 @@
+.carrousel-title{
+  font-weight: 900;
+}
+.carrousel-right-button{
+  top: 50%;
+  left: 0%;
+  transform: translateX(50%) translateY(-50%);
+}
+.carrousel-left-button{
+  top: 50%;
+  right: 0%;
+  transform: translateX(-50%) translateY(-50%);
+}
+.carrousel-selected{
+  right: 50%;
+  bottom: 0%;
+  transform: translateX(50%);
+}

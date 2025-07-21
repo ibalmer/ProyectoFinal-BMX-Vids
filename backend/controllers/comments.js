@@ -5,6 +5,14 @@ import { CreateResponse } from "../utils/response.js";
 
 export class CommentsController {
 
+    static async GetByID(id) {
+        const [rows] = await connection.query(
+            `SELECT * FROM comment WHERE id = ?`,
+            [id]
+        );
+        return rows;
+    }
+
     static async GetByPostID(postID) {
         let response;
         try {
@@ -33,7 +41,6 @@ export class CommentsController {
         }
 
         const response = await CommentsModel.Post(data);
-
         const body = {
             status: 'created',
             code: 201,
@@ -44,6 +51,47 @@ export class CommentsController {
         return CreateResponse('POST', 'comentario', body);
     }
 
+    static async UpdateByID(id, body) {
+        const comment = await CommentsModel.GetByID(id);
+        const bodyComment = comment[0];
+
+        const newComment = { ...bodyComment, ...body };
+
+        const validationBody = commentSchema.safeParse(newComment);
+
+        const commentCompared =
+            bodyComment && newComment &&
+            Object.keys(bodyComment).length === Object.keys(newComment).length &&
+            Object.keys(bodyComment).every((key, index) => key === Object.keys(newComment)[index]);
+
+        if (!validationBody.success || !commentCompared) {
+            return CreateResponse('PUT', 'comentario', null);
+        } else {
+            const data = await CommentsModel.UpdateByID(id, body);
+            return CreateResponse('PUT', 'comentario', data);
+        }
+    }
+
+    static async ModifyByID(id, body) {
+        const comment = await CommentsModel.GetByID(id);
+        const bodyComment = comment[0];
+
+        const newComment = { ...bodyComment, ...body };
+
+        const validationBody = commentSchema.safeParse(newComment);
+
+        const commentCompared =
+            bodyComment && newComment &&
+            Object.keys(bodyComment).length === Object.keys(newComment).length &&
+            Object.keys(bodyComment).every((key, index) => key === Object.keys(newComment)[index]);
+
+        if (!validationBody.success || !commentCompared) {
+            return CreateResponse('PATCH', 'comentario', null);
+        } else {
+            const data = await CommentsModel.ModifyByID(id, body);
+            return CreateResponse('PATCH', 'comentario', data);
+        }
+    }
     static async DeleteByID(id) {
 
         let response;
@@ -54,3 +102,4 @@ export class CommentsController {
     }
 
 }
+

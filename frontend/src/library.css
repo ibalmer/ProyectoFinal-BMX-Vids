@@ -14,8 +14,9 @@ body {
 
 #root {
     height: 100%;
-    min-height: 100vh;
-    display: flex;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
     flex-direction: column;
     align-items: center;
     background-color: var(--white);
@@ -87,6 +88,7 @@ button {
 .bold {
     font-weight: bold;
 }
+
 .normal {
     font-weight: normal;
 }
@@ -140,9 +142,12 @@ blockquote {
 /* 🧱 Fondos */
 .bg-white {
     background-color: var(--white);
-}.bg-black {
+}
+
+.bg-black {
     background-color: var(--black);
 }
+
 .bg-coal-black {
     background-color: var(--coal-black);
 }
@@ -170,15 +175,20 @@ blockquote {
 .bg-street-blue {
     background-color: var(--street-blue);
 }
+.bg-inherit{
+    background-color: inherit;
+}
 
 /* ✍️ Texto */
 
 .text-white {
     color: var(--white);
 }
+
 .text-black {
     color: var(--black);
 }
+
 .text-coal-black {
     color: var(--coal-black);
 }
@@ -286,8 +296,8 @@ blockquote {
     width: 10%;
 }
 
-.width-25 {
-    width: 25%;
+.width-20 {
+    width: 20%;
 }
 
 .width-50 {
@@ -322,8 +332,16 @@ blockquote {
     width: 150px;
 }
 
+.width-200p {
+    width: 200px;
+}
+
 .width-content {
     width: fit-content;
+}
+
+.ratio-16-9 {
+    aspect-ratio: 16 / 9;
 }
 
 .width-max {
@@ -1194,16 +1212,12 @@ blockquote {
     border-right: 4px solid #fff;
 }
 
-.border-color-1,
-.border-c1,
-.bc-1 {
-    border-color: var(--black-color) !important;
+.bc-coal-black {
+    border-color: var(--coal-black);
 }
 
-.border-color-2,
-.border-c2,
-.bc-2 {
-    border-color: var(--white-color) !important;
+.bc-rust-red {
+    border-color: var(--rust-red);
 }
 
 .white-shadow {
@@ -1346,13 +1360,21 @@ blockquote {
 
 /* 🟦 Input crudo estilo concreto */
 .concrete-input {
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
     background-color: var(--concrete-gray);
-    color: var(--off-white);
+    color: var(--warning-yellow);
     border: none;
     font-size: var(--size-2);
     font-family: 'Rajdhani', sans-serif;
+    font-weight: 400;
     padding: var(--distance-1);
     border-radius: var(--radius-1);
+}
+
+.concrete-input::placeholder {
+    color: var(--off-white);
 }
 
 .selected-page {
@@ -1366,6 +1388,69 @@ blockquote {
     text-transform: uppercase;
 }
 
+.register-alert {
+    background-color: var(--coal-black);
+    box-shadow: 0 0 12px var(--warning-yellow);
+    padding: var(--distance-4);
+    border-radius: var(--radius-1);
+    text-align: center;
+    width: fit-content;
+    justify-self: center;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translateX(50%) translateY(-50%);
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--concrete-gray);
+    padding: 2rem;
+    border-radius: var(--radius-2);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: var(--off-white);
+}
+
+.edit-box {
+    background-color: var(--coal-black);
+    color: var(--off-white);
+    box-shadow: 0 0 12px var(--warning-yellow);
+    padding: var(--distance-2);
+    border-radius: var(--radius-1);
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    z-index: 10;
+    width: max-content;
+    min-width: 280px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 1;
+    transform: translateX(50%) translateY(-50%);
+}
+
+.iframe-content {
+    position: relative;
+    width: 75vw;
+    padding-top: 56.25%;
+    margin: 0 auto;
+}
+
+
+.break-word {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
 
 .tipo {
     width: fit-content;
@@ -1377,8 +1462,7 @@ blockquote {
 }
 
 .scale:hover {
-    transform: scale(.95);
-    box-shadow: inset 0 0 30px var(--black-color-op);
+    transform: scale(.75);
 }
 
 .capitalize {
@@ -1393,9 +1477,23 @@ blockquote {
     filter: var(--black-filter);
 }
 
-
-
-
 .flex-important {
     display: flex !important;
+}
+
+/* Media queries para responsive */
+@media (max-width: 945px) {
+    .content-section {
+        padding-inline: 1% !important;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .street-blue-button,
+    .rust-button {
+        font-size: var(--size-mini);
+        padding: var(--distance-1);
+        letter-spacing: 0px;
+    }
 }

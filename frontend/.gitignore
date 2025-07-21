@@ -24,5 +24,6 @@ dist-ssr
 *.sw?
 
 # txt y dotenv
+.env
 pendientes.txt
 backend-sinJWT

@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 
-import { UserProvider } from '../Providers/Users/UserProvider';
+import { UserProvider } from './Providers/Users/UserProvider';
 
 import './library.css'
 import './root.css';

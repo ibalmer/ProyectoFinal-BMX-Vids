@@ -1,0 +1,11 @@
+.comment-box {
+  padding: var(--distance-2);
+  min-width: 280px;
+  max-width: 100%;
+}
+
+.modify-modal{
+  top: 50%;
+  right: 50%;
+  transform: translateX(50%) translateY(50%);
+}

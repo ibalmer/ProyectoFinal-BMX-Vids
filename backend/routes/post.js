@@ -22,7 +22,7 @@ PostRouter.post('/', async (req, res) => {
 PostRouter.put('/:id', async (req, res) => {
     const { id } = req.params;
     const body = req.body;
-
+    console.log('body',body)
     const response = await PostController.UpdateByID(id, body);
 
     res.status(response.code).json(response);

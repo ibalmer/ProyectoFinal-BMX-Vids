@@ -165,6 +165,8 @@ export class UserController {
         const newUser = { ...bodyUser, ...body }
         const validationBody = userSchema.safeParse(newUser)
         console.log(validationBody.success)
+        console.log(bodyUser)
+        console.log(newUser)
 
         const userCompared =
             bodyUser && newUser &&

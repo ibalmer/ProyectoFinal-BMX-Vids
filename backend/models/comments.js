@@ -13,6 +13,14 @@ const connection = await mysql.createConnection(config);
 
 export class CommentsModel {
 
+    static async GetByID(id) {
+        const [rows] = await connection.query(
+            `SELECT * FROM comment WHERE id = ?`,
+            [id]
+        );
+        return rows;
+    }
+
     static async GetByPostID(postID) {
 
         const query = `SELECT 
@@ -44,6 +52,37 @@ export class CommentsModel {
         const result = await connection.query(
             `INSERT INTO comment(user_id,post_id,content) VALUES (?,?,?)`, [body.user_id, body.post_id, body.content]
         );
+
+        return result;
+    }
+
+    static async UpdateByID(id, body) {
+        const [response] = await connection.query(
+            `UPDATE comment 
+             SET content = ?, user_id = ? 
+             WHERE id = ?;`,
+            [
+                body.content,
+                body.user_id,
+                id
+            ]
+        );
+
+        if (response.affectedRows === 0)
+            return [response];
+        else {
+            return [response, { id, content: body.content }];
+        }
+    }
+
+    static async ModifyByID(id, body) {
+        const keys = Object.keys(body);
+        const values = Object.values(body);
+
+        const fields = keys.map(key => `${key} = ?`).join(", ");
+        const query = `UPDATE comment SET ${fields} WHERE id = ?`;
+
+        const [result] = await connection.query(query, [...values, id]);
 
         return result;
     }
