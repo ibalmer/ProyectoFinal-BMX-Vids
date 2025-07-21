@@ -44,8 +44,6 @@ export function Login() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        // Limpiar error cuando el usuario empiece a escribir
         if (error) setError('');
 
         setUserLogin(prev => ({
@@ -57,7 +55,6 @@ export function Login() {
     const sendData = async (e) => {
         e.preventDefault();
 
-        // Prevenir envíos múltiples
         if (loading) return;
         toggleComponent();
         setLoading(true);

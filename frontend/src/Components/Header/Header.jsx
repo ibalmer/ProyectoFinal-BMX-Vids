@@ -59,8 +59,6 @@ export function Header() {
                             </Link>
                         </li>
                     </div>
-
-                    {/* Botón Hamburguesa - Solo visible en mobile */}
                     <button 
                         onClick={toggleMenu}
                         className="hamburger-button flex align-center justify-center size-5"
@@ -68,8 +66,6 @@ export function Header() {
                     >
                         {isMenuOpen ? <IoClose size={46} /> : <IoMenu size={46} />}
                     </button>
-
-                    {/* Botones Usuario - Derecha */}
                     <div className="flex align-end flex-center gap-2 column">
                         {userAuthenticated.user_type === 'admin' && (
                             <li>
@@ -97,8 +93,6 @@ export function Header() {
                         </div>
                     </div>
                 </ul>
-
-                {/* Menú Mobile - Solo visible cuando está abierto */}
                 <div className={`hamburger-menu ${isMenuOpen ? 'hamburger-menu-open' : ''}`}>
                     <ul className="hamburger-menu-list">
                         <li className={`hamburger-menu-item ${isActive('/') ? 'active' : ''}`}>
@@ -126,8 +120,6 @@ export function Header() {
                         </li>
                     </ul>
                 </div>
-
-                {/* Overlay para cerrar el menú */}
                 {isMenuOpen && (
                     <div 
                         className="hamburger-overlay" 
@@ -137,7 +129,6 @@ export function Header() {
                 )}
             </nav>
 
-            {/* Modales */}
             {showCreateModal === 'post' && (
                 <CreatePost setShowCreateModal={setShowCreateModal} />
             )}
@@ -145,8 +136,6 @@ export function Header() {
             {showCreateModal === 'account' && (
                 <Register setShowCreateModal={setShowCreateModal} />
             )}
-
-            {/* Buscador */}
             <div className="m-top-2 flex align-center flex-center width-100 height-100">
                 <InputSearcher />
             </div>

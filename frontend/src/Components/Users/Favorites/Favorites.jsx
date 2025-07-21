@@ -11,14 +11,14 @@ export function Favorites() {
 
     useEffect(() => {
         if (!userAuthenticated?.favs) {
-            setPosts([]); // Limpiar posts si no hay favoritos
+            setPosts([]); 
             return;
         }
 
         const favsArray = userAuthenticated.favs
             .split(",")
             .map(id => Number(id.trim()))
-            .filter(id => !isNaN(id) && id > 0); // Filtrar IDs inválidos
+            .filter(id => !isNaN(id) && id > 0);
 
         if (favsArray.length === 0) {
             setPosts([]);
@@ -46,9 +46,7 @@ export function Favorites() {
     }, [userAuthenticated?.favs, getPostByParams]);
 
     function handleToggleFav(postId) {
-        // Filtrar el post del estado local para actualización inmediata
         setPosts(prevPosts => prevPosts.filter(post => {
-            // Ajustar según la estructura real de tus datos
             const actualPostId = post.data ? post.data[0]?.id : post.id;
             return actualPostId !== postId;
         }));
@@ -58,7 +56,6 @@ export function Favorites() {
         <section className="flex flex-center align-center column p-5 gap-5">
             <div className="flex flex-center align-center wrap gap-6">
                 {posts.length > 0 ? posts.map((post) => {
-                    // Manejar estructura inconsistente de datos
                     const postData = post.data ? post.data[0] : post;
                     
                     return (

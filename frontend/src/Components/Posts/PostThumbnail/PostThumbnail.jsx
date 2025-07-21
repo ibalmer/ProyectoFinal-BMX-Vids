@@ -16,7 +16,7 @@ export function PostThumbnail({ post, onToggleFav }) {
             const parsedFavs = userAuthenticated.favs
                 .split(",")
                 .map(idStr => Number(idStr.trim()))
-                .filter(id => !isNaN(id) && id > 0); // Filtrar IDs inválidos
+                .filter(id => !isNaN(id) && id > 0);
             setFavsArray(parsedFavs);
         } else {
             setFavsArray([]);
