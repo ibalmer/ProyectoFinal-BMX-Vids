@@ -9,6 +9,7 @@ import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import { BsGearWide } from "react-icons/bs";
 
 import './Login.css'
+import { Profile } from "../Profile/Profile";
 
 export function Login() {
     const { loginUser, userAuthenticated, logOutUser } = useContext(UserContext);
@@ -20,6 +21,7 @@ export function Login() {
         email: '',
         user_password: ''
     });
+    const [showProfileModal, setShowProfileModal] = useState(false)
 
 
     const loginRef = useRef(null)
@@ -85,9 +87,38 @@ export function Login() {
         });
     };
 
+    /*     const handleLogout = async () => {
+            await logOutUser();
+            window.location.reload()
+        }; */
+    // En Login.js - Función handleLogout corregida
     const handleLogout = async () => {
-        await logOutUser();
-        window.location.reload()
+        setLoading(true);
+        try {
+            const success = await logOutUser();
+
+            if (success) {
+                // Cerrar el dropdown
+                setIsOpen(false);
+
+                // Opcional: Navegar a home o recargar
+                // navigate('/'); // O usar esto en lugar de reload
+                window.location.reload();
+            } else {
+                console.warn("El logout no se completó correctamente");
+                // Aún así recargar para limpiar el estado
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error("Error durante el logout:", error);
+            // En caso de error, forzar la limpieza del estado
+            window.location.reload();
+        } finally {
+            setLoading(false);
+        }
+    };
+    const handleShowProfile = () => {
+        setShowProfileModal(true)
     };
 
 
@@ -161,10 +192,10 @@ export function Login() {
                                 <>
                                     <BsGearWide className="text-dirty-white size-max-3" />
                                     <form autoComplete="off" className="flex flex-center align-center column gap-2">
-                                        <button className="concrete-gray-button flex flex-center align-center width-content" type="button" onClick={handleClose} disabled={loading}>
+                                        <button className="concrete-gray-button flex flex-center align-center width-content" type="button" onClick={handleShowProfile} disabled={loading}>
                                             <LuUser />Perfil
                                         </button>
-                                        <button className="concrete-gray-button flex flex-center align-center width-content" type="button" onClick={() => navigate('./favorites')} disabled={loading}>
+                                        <button className="concrete-gray-button flex flex-center align-center width-content" type="button" onClick={() => navigate('/favorites')} >
                                             <LuStar />Favoritos
                                         </button>
                                         <div className="flex flex-center gap-2 m-top-4">
@@ -177,6 +208,9 @@ export function Login() {
                             )
                     }
                 </div>
+            )}
+            {showProfileModal && (
+                <Profile setShowProfileModal={setShowProfileModal} user={userAuthenticated} />
             )}
         </div>
     );

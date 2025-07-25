@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PostsContext } from "../../../Providers/Post/PostContext";
 import { UserContext } from "../../../Providers/Users/UserContext";
+import { ConfirmAlert } from "../../ConfirmAlert/ConfirmAlert";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa";
 
@@ -63,6 +64,17 @@ export function CreatePost({ setShowCreateModal }) {
         }));
     };
 
+    const handleConfirm = () => {
+        setPostAlert(false);
+        setShowCreateModal(false)
+        navigate(`/post/${createdPostId}`);
+    };
+
+    const handleCancel = () => {
+        setPostAlert(false)
+        setShowCreateModal(false)
+    };
+
     const sendData = async (e) => {
         e.preventDefault();
 
@@ -70,13 +82,11 @@ export function CreatePost({ setShowCreateModal }) {
             alert("El contenido debe tener al menos 20 caracteres");
             return;
         }
-
         const postToSend = {
             ...newPost,
             author: userAuthenticated.user_name,
             user_id: userAuthenticated.id
         };
-
         try {
             const response = await createPost(postToSend);
             const insertId = response?.data?.[0]?.insertId;
@@ -205,23 +215,8 @@ export function CreatePost({ setShowCreateModal }) {
             </div>
 
             {postAlert && (
-                <div className="modal-overlay">
-                    <div className="register-alert text-center width-content justify-self-center">
-                        <h3 className="size-4 bold text-warning-yellow">¡Post creado con éxito!</h3>
-                        <p className="size-3 text-warning-yellow">Tu contenido ha sido publicado</p>
-                        <button
-                            className="rust-button m-top-2 width-content"
-                            onClick={() => {
-                                setPostAlert(false);
-                                navigate(`/post/${createdPostId}`);
-                            }}
-                            title='Ver Post'
-                        >
-                            Ver post
-                        </button>
-                    </div>
-                    <div className="register-backdrop"></div>
-                </div>
+                <ConfirmAlert question={'Ver post?'} infoMessage={'¡Tu contenido ha sido publicado!'} confirm={handleConfirm} cancel={handleCancel} />
+
             )}
         </section>
     );

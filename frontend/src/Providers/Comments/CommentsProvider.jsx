@@ -1,14 +1,15 @@
-import { useState } from "react";
 import { CommentsContext } from './CommentsContext'
-import axios from "axios";
+import { AxiosApi } from '../../Utils/axiosApi';
 
 export function CommentsProvider({ children }) {
+
+    const api = AxiosApi();
 
     const getCommentsByPostID = async (id) => {
 
         try {
-            const res = await axios.get(`http://localhost:3048/comments/post/${id}`)
-            return res
+            const res = await api.get(`comments/post/${id}`)
+            return res 
         } catch (error) {
             console.error('Error al cargar comentarios:', error)
         }
@@ -17,7 +18,7 @@ export function CommentsProvider({ children }) {
     const createComment = async (newComment) => {
         console.log(newComment)
         try {
-            const res = await axios.post('http://localhost:3048/comments', newComment)
+            const res = await api.post('/comments', newComment)
         } catch (error) {
             console.error('Error al publicar el comentario:', error)
         }
@@ -27,11 +28,11 @@ export function CommentsProvider({ children }) {
         const isFullUpdate = ['id', 'content', 'user_id']
             .every(key => key in commentData);
 
-        const url = `http://localhost:3048/comments/${id}`
+        const url = `/comments/${id}`
 
 
         try {
-            const res = await axios[isFullUpdate ? "put" : "patch"](url, commentData);
+            const res = await api[isFullUpdate ? "put" : "patch"](url, commentData);
             if (!res.data || typeof res.data !== "object") {
                 console.warn("Respuesta no válida:", res.data);
                 return;
@@ -46,7 +47,7 @@ export function CommentsProvider({ children }) {
 
     const deleteCommentByID = async (id) => {
         try {
-            const res = await axios.delete(`http://localhost:3048/comments/${id}`)
+            const res = await api.delete(`/comments/${id}`)
             return res
         } catch (error) {
             console.error('Error al cargar el post:', error)

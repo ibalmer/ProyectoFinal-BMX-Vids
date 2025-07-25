@@ -52,6 +52,31 @@ UserRouter.post('/login', async (req, res) => {
 
 });
 
+UserRouter.post('/validate_password', async (req, res) => {
+    const body = req.body;
+    const response = await UserController.PostLogin(body)
+    
+    if (response.status === "unauthorized") {
+        res.status(response.code).json(response);
+    } else {
+        const user = response.data
+        const token = jwt.sign({ id: user.id, user_type: user.user_type }, process.env.SECRET_KEY_JWT, { expiresIn: '72h' });
+        
+        res.cookie('user_token', token, {
+            httpOnly: true,
+            secure: false,
+            maxAge: 1000 * 60 * 60 * 72
+        })
+        
+        const { user_type, ...cleanedData } = response.data;
+        const cleanedResponse = {
+            ...response,
+            data: cleanedData
+        };
+        res.status(response.code).json(cleanedResponse);
+    }
+});
+
 UserRouter.get('/auth', async (req, res) => {
     const token = req.cookies.user_token;
 

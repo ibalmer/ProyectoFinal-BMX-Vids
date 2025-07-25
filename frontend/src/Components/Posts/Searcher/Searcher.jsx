@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
+import { scrollToHeader } from "../../../Utils/scrollToHeader";
 import { PostsContext } from "../../../Providers/Post/PostContext";
 import { PostThumbnail } from "../PostThumbnail/PostThumbnail";
 import { MdOutlineArrowForwardIos, MdOutlineArrowBackIos } from "react-icons/md";
@@ -34,6 +35,10 @@ export function Searcher() {
   useEffect(() => {
     setOffset(0);
   }, [filter]);
+
+  useEffect(() => {
+    scrollToHeader();
+  }, [offset, results])
 
   if (!filter) return <p>Ingresá un término de búsqueda.</p>;
 

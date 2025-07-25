@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
+import { scrollToHeader } from "../../../Utils/scrollToHeader";
 import { PostsContext } from "../../../Providers/Post/PostContext";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { PostThumbnail } from "../PostThumbnail/PostThumbnail";
 import { MdOutlineArrowForwardIos, MdOutlineArrowBackIos } from "react-icons/md";
 
@@ -16,6 +17,10 @@ export function Category() {
     useEffect(() => {
         setOffset(0);
     }, [param]);
+
+    useEffect(() => {
+        scrollToHeader();
+    }, [offset, posts])
 
     useEffect(() => {
         const fetchCategory = async () => {

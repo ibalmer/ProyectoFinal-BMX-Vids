@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../Providers/Users/UserContext";
+import { ConfirmAlert } from "../../ConfirmAlert/ConfirmAlert";
 
 
 export function Register({ setShowCreateModal }) {
@@ -29,6 +30,13 @@ export function Register({ setShowCreateModal }) {
             ...prev,
             [name]: value
         }));
+    };
+
+    const handleConfirmAccount = () => {
+        setRegisterAlert(false);
+        setShowCreateModal(false);
+        login();
+        navigate('/');
     };
 
     const sendData = async (e) => {
@@ -113,7 +121,6 @@ export function Register({ setShowCreateModal }) {
                             disabled={loading}
                             required
                         />
-
                         <label className="size-2 bold" htmlFor="email">Email</label>
                         <input
                             className="concrete-input"
@@ -125,7 +132,6 @@ export function Register({ setShowCreateModal }) {
                             disabled={loading}
                             required
                         />
-
                         <label className="size-2 bold" htmlFor="user_password">Contraseña</label>
                         <input
                             className="concrete-input"
@@ -137,7 +143,6 @@ export function Register({ setShowCreateModal }) {
                             disabled={loading}
                             required
                         />
-
                         {error && (
                             <div className="text-danger size-3">
                                 {error}
@@ -156,30 +161,12 @@ export function Register({ setShowCreateModal }) {
                                 Cancelar
                             </button>
                         </div>
-
                     </form>
                 )}
-
-                {registerAlert && (
-                    <div className="modal-overlay">
-                        <div className="register-alert">
-                            <h3 className="size-4 bold text-warning-yellow">{registerUser.user_name}</h3>
-                            <p className="size-3 text-warning-yellow">Tu cuenta ha sido creada</p>
-                            <button
-                                className="rust-button m-top-2 width-content"
-                                onClick={() => {
-                                    setRegisterAlert(false);
-                                    login();
-                                    navigate('/');
-                                }}
-                            >
-                                Aceptar
-                            </button>
-                        </div>
-                    </div>
-                )}
-
             </div>
+            {registerAlert && (
+                <ConfirmAlert question={registerUser.user_name} infoMessage={'Tu cuenta ha sido creada con exito'} confirm={handleConfirmAccount} />
+            )}
         </section>
     );
 }

@@ -89,6 +89,12 @@
   z-index: 1;
   backdrop-filter: blur(2px);
 }
+.show-searcher{
+  display: flex;
+}
+.searcher-hidden{
+  display: none;
+}
 
 /* Media queries para responsive */
 @media (max-width: 945px) {

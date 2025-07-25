@@ -98,7 +98,7 @@ export class UserModel {
 
     static async Post(body) {
 
-        const saltRounds = parseInt(process.env.BCRYPTROUNDS) 
+        const saltRounds = parseInt(process.env.BCRYPTROUNDS)
 
         const hashedPassword = await bcrypt.hash(body.user_password, saltRounds);
 
@@ -113,11 +113,15 @@ export class UserModel {
                 body.email
             ]
         );
-        
+
         return [result, { username: body.user_name }];
     }
 
     static async UpdateByID(id, body) {
+
+        const saltRounds = parseInt(process.env.BCRYPTROUNDS)
+        const hashedPassword = await bcrypt.hash(body.user_password, saltRounds);
+
         const [response] = await connection.query(
             `UPDATE user 
          SET user_name = ?, name = ?, last_name = ?, user_password = ?, email = ?, user_type = ? 
@@ -126,7 +130,7 @@ export class UserModel {
                 body.user_name,
                 body.name,
                 body.last_name,
-                body.user_password,
+                hashedPassword,
                 body.email,
                 body.user_type,
                 id
@@ -140,18 +144,24 @@ export class UserModel {
         }
     }
 
-    static async ModifyByID(id, body) {
-        const keys = Object.keys(body);
-        const values = Object.values(body);
+static async ModifyByID(id, body) {
 
-        const fields = keys.map(key => `${key} = ?`).join(", ");
-
-        const query = `UPDATE user SET ${fields} WHERE id = ?`;
-
-        const [result] = await connection.query(query, [...values, id]);
-
-        return result;
+    if (body.user_password) {
+        const saltRounds = parseInt(process.env.BCRYPTROUNDS);
+        const hashedPassword = await bcrypt.hash(body.user_password, saltRounds);
+        body.user_password = hashedPassword;
     }
+    
+    const keys = Object.keys(body);
+    const values = Object.values(body);
+    
+    const fields = keys.map(key => `${key} = ?`).join(", ");
+    const query = `UPDATE user SET ${fields} WHERE id = ?`;
+
+    const [result] = await connection.query(query, [...values, id]);
+
+    return result;
+}
 
 
     static async DeleteByID(id) {

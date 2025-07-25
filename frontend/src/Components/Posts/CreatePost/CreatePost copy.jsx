@@ -5,7 +5,7 @@ import { UserContext } from "../../../Providers/Users/UserContext";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa";
 
-export function CreatePost() {
+export function CreatePost({ setShowCreateModal }) {
     const { createPost } = useContext(PostsContext);
     const { userAuthenticated } = useContext(UserContext);
     const navigate = useNavigate();
@@ -92,12 +92,12 @@ export function CreatePost() {
     };
 
     return (
-        <section className="block column flex-center align-center p-inline-6">
-            <h2>Crear Post</h2>
-            <div>
+        <section className="modal-overlay">
+            <div className="edit-box">
+                <h2>Crear Post</h2>
                 {userAuthenticated.user_type === 'admin' ? (
-                    <form className="flex gap-3 column width-100" onSubmit={sendData}>
-                        <label className="size-5 bold" htmlFor="title">Título</label>
+                    <form className="flex gap-1 column" onSubmit={sendData}>
+                        <label className="size-2 bold" htmlFor="title">Título</label>
                         <input
                             type="text"
                             name="title"
@@ -107,7 +107,7 @@ export function CreatePost() {
                             required
                             className="concrete-input"
                         />
-                        <label className="size-5 bold" htmlFor="description">Descripción</label>
+                        <label className="size-2 bold" htmlFor="description">Descripción</label>
                         <textarea
                             name="description"
                             placeholder="Descripción"
@@ -117,7 +117,7 @@ export function CreatePost() {
                             required
                             className="concrete-input"
                         />
-                        <label className="size-5 bold" htmlFor="content">Contenido</label>
+                        <label className="size-2 bold" htmlFor="content">Contenido</label>
                         <textarea
                             name="content"
                             placeholder="Contenido"
@@ -127,7 +127,7 @@ export function CreatePost() {
                             required
                             className="concrete-input"
                         />
-                        <label className="size-5 bold" htmlFor="video_link">Enlace del video (YouTube)</label>
+                        <label className="size-2 bold" htmlFor="video_link">Enlace del video (YouTube)</label>
                         <input
                             type="url"
                             name="video_link"
@@ -137,9 +137,9 @@ export function CreatePost() {
                             required
                             className="concrete-input"
                         />
-                        <div className="flex gap-2 column">
-                            <div className="flex gap-2">
-                                <label className="size-5 bold" htmlFor="tag">Tag</label>
+                        <div className="flex gap-1 column">
+                            <div className="flex gap-1">
+                                <label className="size-2 bold" htmlFor="tag">Tag</label>
                                 <input
                                     type="text"
                                     name="tag"
@@ -152,14 +152,14 @@ export function CreatePost() {
                                     <FaPlus /> tag
                                 </button>
                             </div>
-                            <ul className="flex gap-2 wrap">
+                            <ul className="flex gap-1 wrap">
                                 {newPost.tags
                                     .split(',')
                                     .map(tag => tag.trim())
                                     .filter(tag => tag !== '')
                                     .map((tag, index) => (
-                                        <li className="flex gap-2 align-center" key={index}>
-                                            <p className="bold size-3">{tag}</p>
+                                        <li className="flex gap-1 align-center" key={index}>
+                                            <p className="bold size-2">{tag}</p>
                                             <button
                                                 type="button"
                                                 onClick={() => handleRemoveTag(index)}
@@ -172,8 +172,8 @@ export function CreatePost() {
                                     ))}
                             </ul>
                         </div>
-                        <div className="flex gap-2">
-                            <label className="size-5 bold" htmlFor="type_id">Categoría</label>
+                        <div className="flex gap-1">
+                            <label className="size-2 bold" htmlFor="type_id">Categoría</label>
                             <select
                                 name="type_id"
                                 value={newPost.type_id}
@@ -187,7 +187,17 @@ export function CreatePost() {
                                 <option value="3">Event Video</option>
                             </select>
                         </div>
-                        <button className="street-blue-button width-content m-top-3" title='Crear Post' type="submit">Crear Post</button>
+                        <div className="flex gap-1 m-top-2">
+                            <button className="street-blue-button width-content" title='Crear Post' type="submit">Crear Post</button>
+                            <button
+                                type="button"
+                                className="rust-button width-content"
+                                title="Cancelar"
+                                onClick={() => setShowCreateModal(false)}
+                            >
+                                Cancelar
+                            </button>
+                        </div>
                     </form>
                 ) : (
                     <h2>No tenés permisos para crear un posteo</h2>

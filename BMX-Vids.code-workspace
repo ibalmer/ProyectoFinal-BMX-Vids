@@ -1,11 +1,15 @@
 {
 	"folders": [
 		{
+			"name": "backend",
 			"path": "backend"
 		},
 		{
+			"name": "frontend",
 			"path": "frontend"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "frontend"
+	}
 }

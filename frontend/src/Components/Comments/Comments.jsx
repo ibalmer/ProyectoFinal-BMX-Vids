@@ -1,12 +1,15 @@
 import { useContext, useEffect, useState } from "react";
+import { usePopupMessage } from "../../Hooks/usePopupMessage";
 import { CommentsContext } from '../../Providers/Comments/CommentsContext';
 import { UserContext } from '../../Providers/Users/UserContext';
 import { formatDistanceToNow } from 'date-fns';
+import { PopupMessage } from "../PopUpMessage/PopUpMessage";
 import { es } from 'date-fns/locale';
+import { scrollToHeader } from "../../Utils/scrollToHeader";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import { IoCloseSharp, IoCheckmarkSharp } from "react-icons/io5";
 import './Comments.css';
+import { ConfirmAlert } from "../ConfirmAlert/ConfirmAlert";
 
 export function Comments({ id }) {
     const { getCommentsByPostID, createComment, deleteCommentByID, modifyCommentById } = useContext(CommentsContext);
@@ -16,6 +19,7 @@ export function Comments({ id }) {
     const [commentToDeleteId, setCommentToDeleteId] = useState(null);
     const [modifyComment, setModifyComment] = useState(null);
     const [showEditForm, setShowEditForm] = useState(false);
+    const { message: errorMessage, showMessage, hideMessage } = usePopupMessage(4000);
 
     useEffect(() => {
         getComments();
@@ -121,12 +125,12 @@ export function Comments({ id }) {
     const modifyData = async () => {
         if (modifyComment) {
             try {
-                await modifyCommentById({content:modifyComment.content}, modifyComment.id);
+                await modifyCommentById({ content: modifyComment.content }, modifyComment.id);
                 setModifyComment(null);
                 await getComments();
             } catch (err) {
                 console.error('Error al modificar el comentario', err);
-                alert('Error al modificar el comentario');
+                showMessage('Parece que no se cambió nada en el comentario.');
                 setModifyComment(null);
             }
         }
@@ -148,7 +152,7 @@ export function Comments({ id }) {
                 {userAuthenticated && (userAuthenticated.user_type === 'user' || userAuthenticated.user_type === 'admin') ? (
                     <button className="street-blue-button" title='Comentar' type="submit">Comentar</button>
                 ) : (
-                    <h4>Inicia sesión para comentar</h4>
+                    <h4 className="pointer" onClick={() => scrollToHeader()}>Inicia sesión para comentar</h4>
                 )}
             </form>
 
@@ -183,30 +187,6 @@ export function Comments({ id }) {
                     <p>No hay comentarios en esta publicación.</p>
                 )}
             </div>
-
-            {commentToDeleteId && (
-                <div className="modal-overlay">
-                    <div className="register-alert">
-                        <h3 className="size-4 bold text-warning-yellow">¿Estás seguro de que quieres eliminar este comentario?</h3>
-                        <p className="size-3 text-warning-yellow">Esta acción es permanente.</p>
-                        <button
-                            className="street-blue-button m-1 m-top-2 width-content"
-                            onClick={executeDelete}
-                            title='Eliminar'
-                        >
-                            <IoCheckmarkSharp />
-                        </button>
-                        <button
-                            className="rust-button m-1 m-top-2 width-content"
-                            onClick={cancelDelete}
-                            title='Cancelar'
-                        >
-                            <IoCloseSharp />
-                        </button>
-                    </div>
-                </div>
-            )}
-
             {showEditForm && modifyComment && (
                 <div className="modal-overlay">
                     <div className="edit-box">
@@ -238,28 +218,16 @@ export function Comments({ id }) {
                     </div>
                 </div>
             )}
+            {errorMessage && (
+                <PopupMessage message={errorMessage} closeMessage={hideMessage}/>
+            )}
 
             {modifyComment && !showEditForm && (
-                <div className="modal-overlay">
-                    <div className="register-alert">
-                        <h3 className="size-4 bold text-warning-yellow">¿Estás seguro de que quieres modificar este comentario?</h3>
-                        <p className="size-3 text-warning-yellow">Esta acción es permanente.</p>
-                        <button
-                            className="street-blue-button m-1 m-top-2 width-content"
-                            onClick={modifyData}
-                            title='Modificar'
-                        >
-                            <IoCheckmarkSharp />
-                        </button>
-                        <button
-                            className="rust-button m-1 m-top-2 width-content"
-                            onClick={cancelModify}
-                            title='Cancelar'
-                        >
-                            <IoCloseSharp />
-                        </button>
-                    </div>
-                </div>
+                 <ConfirmAlert question={'¿Estás seguro de que quieres modificar este comentario?'} confirm={modifyData} cancel={cancelModify} />
+            )}
+            {commentToDeleteId && (
+                <ConfirmAlert question={'¿Estás seguro de que quieres eliminar este comentario?'} infoMessage={'Esta acción es permanente.'} confirm={executeDelete} cancel={cancelDelete} />
+
             )}
         </div>
     );

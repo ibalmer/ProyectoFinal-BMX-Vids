@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { PostsContext } from './PostContext'
-import axios from "axios";
+import { AxiosApi } from "../../Utils/axiosApi";
 
 
 
 export function PostsProvider({ children }) {
     const [posts, setPosts] = useState()
+    const api = AxiosApi()
     const [loading, setLoading] = useState(true)
 
 
     const getPosts = async ({ limit = 10, offset = 0 }) => {
         try {
-            const res = await axios.get('http://localhost:3048/posts', {
+            const res = await api.get('/posts', {
                 params: { limit, offset }
             });
             setPosts(res.data);
@@ -25,7 +26,7 @@ export function PostsProvider({ children }) {
     const getPostByParams = async (param) => {
 
         try {
-            const res = await axios.get(`http://localhost:3048/post/${param}`)
+            const res = await api.get(`/post/${param}`)
             return res
         } catch (error) {
             console.error('Error al cargar el post:', error)
@@ -33,9 +34,10 @@ export function PostsProvider({ children }) {
     };
     const getPostsByParams = async (param, { limit = 10, offset = 0 }) => {
         try {
-            const res = await axios.get(`http://localhost:3048/posts/${param}`, {
+            const res = await api.get(`/posts/${param}`, {
                 params: { limit, offset }
             });
+            console.log(res)
             return res.data;
         } catch (error) {
             console.error('Error al cargar la categoría:', error);
@@ -45,7 +47,7 @@ export function PostsProvider({ children }) {
 
     const getPostsByFilters = async (filter, { limit = 10, offset = 0 }) => {
         try {
-            const res = await axios.get('http://localhost:3048/posts', {
+            const res = await api.get('/posts', {
                 params: { filter, limit, offset }
             });
             return res.data;
@@ -58,7 +60,7 @@ export function PostsProvider({ children }) {
     const createPost = async (newPost) => {
         console.log(newPost)
         try {
-            const res = await axios.post("http://localhost:3048/post", newPost);
+            const res = await api.post("/post", newPost);
 
             if (!res.data || typeof res.data !== "object") {
                 console.warn("La respuesta no contiene un post válido:", res.data);
@@ -75,11 +77,11 @@ export function PostsProvider({ children }) {
         const isFullUpdate = ["title", "description", "content", "video_link", "tags", "type_id"]
             .every(key => key in postData);
 
-        const url = `http://localhost:3048/post/${id}`
+        const url = `/post/${id}`
             
 
         try {
-            const res = await axios[isFullUpdate ? "put" : "patch"](url, postData);
+            const res = await api[isFullUpdate ? "put" : "patch"](url, postData);
             if (!res.data || typeof res.data !== "object") {
                 console.warn("Respuesta no válida:", res.data);
                 return;
@@ -94,7 +96,7 @@ export function PostsProvider({ children }) {
 
     const deletePostById = async (id) => {
         try {
-            const res = await axios.delete(`http://localhost:3048/post/${id}`)
+            const res = await api.delete(`/post/${id}`)
 
             return res
         } catch (error) {
