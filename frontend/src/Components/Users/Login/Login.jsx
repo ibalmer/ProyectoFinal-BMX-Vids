@@ -60,7 +60,6 @@ export function Login({ setShowCreateModal }) {
         e.preventDefault();
 
         if (loading) return;
-        toggleComponent();
         setLoading(true);
         setError('');
 
@@ -71,9 +70,10 @@ export function Login({ setShowCreateModal }) {
                 email: '',
                 user_password: ''
             });
+            toggleComponent();
         } catch (err) {
             console.error('Error en login:', err);
-            setError(err.response?.data?.errors || 'Error al iniciar sesión');
+            setError('Usuario o contraseña no válidos.');
 
         } finally {
             setLoading(false);
@@ -89,11 +89,6 @@ export function Login({ setShowCreateModal }) {
         });
     };
 
-    /*     const handleLogout = async () => {
-            await logOutUser();
-            window.location.reload()
-        }; */
-    // En Login.js - Función handleLogout corregida
     const handleLogout = async () => {
         setLoading(true);
         try {
@@ -178,9 +173,7 @@ export function Login({ setShowCreateModal }) {
                                         </div>
 
                                         {error && (
-                                            <div style={{ color: 'red', fontSize: '0.9rem' }}>
-                                                {error}
-                                            </div>
+                                            <p className="bold text-alert-red">{error}</p>
                                         )}
                                         <div className="flex flex-center column align-center gap-2 m-top-4">
                                             <button className="rust-button flex flex-center align-center gap-1" type="button" onClick={() => setShowCreateModal('account')}>

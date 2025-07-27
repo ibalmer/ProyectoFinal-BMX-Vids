@@ -30,7 +30,7 @@ UserRouter.post('/login', async (req, res) => {
     const response = await UserController.PostLogin(body)
     console.log('response ruta:', response)
     
-    if (response.code != 401 && response.code != 404) {
+    if (response.code != 400 && response.code != 404) {
         const user = response.data
         const token = jwt.sign({ id: user.id, user_type: user.user_type }, process.env.SECRET_KEY_JWT, { expiresIn: '72h' });
 
@@ -49,7 +49,7 @@ UserRouter.post('/login', async (req, res) => {
         res.status(response.code).json(cleanedResponse);
     } else {
         console.log('llego al else')
-        res.status(response.code,':',response.status)
+        res.status(response.code).json
     }
 
 });

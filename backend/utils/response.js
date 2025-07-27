@@ -2,7 +2,6 @@ const formatValidationErrors = (zodError) => {
     const errors = [];
     if (zodError.errors) {
         zodError.errors.forEach((error) => {
-            console.log(error)
             const field = error.path.join(".");
             errors.push({ [field]: error.message });
         });
@@ -42,6 +41,7 @@ export const CreateResponse = (
 
         case 'POST':
             console.log('data create response:', data)
+            console.log('/////EL ULTIMO//////')
             // If there are validation errors, return bad request
             if (validationErrors) {
                 response = {
@@ -58,7 +58,6 @@ export const CreateResponse = (
                     errors: data.errors
                 };
             }
-            console.log('response createresponse:', response)
             break;
 
         case 'PUT':

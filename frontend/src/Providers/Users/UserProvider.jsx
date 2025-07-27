@@ -89,8 +89,10 @@ export function UserProvider({ children }) {
         console.log(userLogin)
         try {
             const res = await api.post('/users/login', userLogin, {
-                withCredentials: true
+                withCredentials: true,
+                timeout: 5000 // 5 segundos
             });
+            console.log('res provider:', res)
             const user = res.data.data;
 
             if (!user || typeof user !== "object") {

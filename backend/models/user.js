@@ -88,7 +88,6 @@ export class UserModel {
     static async GetByEmail(email) {
         try {
             const [user] = await connection.query('SELECT * FROM user WHERE email = ?', [email])
-            console.log('user del modelo:' ,user)
             return user;
 
         } catch (error) {

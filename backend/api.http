@@ -96,7 +96,7 @@ Content-Type: application/json
 
 {
   "email": "ivan@prueba.com",
-  "user_password": "loramones"
+  "user_password": "lorramones"
 }
 
 ### LogOut ### 

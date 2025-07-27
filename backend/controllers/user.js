@@ -96,26 +96,16 @@ export class UserController {
         };
 
         if (!dbUser || dbUser.length === 0) {
-            const body = {
-                status: 'not found',
-                code: 404,
-                data: null,
-                errors: 'El usuario no existe'
-            };
-            return CreateResponse('POST', 'usuario', body);
+            const errors = [{email: 'El email no existe'}];
+            return CreateResponse('POST', 'usuario', null, errors);
         }
 
         const isValid = await bcrypt.compare(data.user_password, dbUser[0].user_password);
         console.log('isvalid:', isValid)
 
         if (!isValid) {
-            const body = {
-                status: 'unauthorized',
-                code: 401,
-                data: null,
-                errors: 'Contraseña incorrecta'
-            };
-            return CreateResponse('POST', 'usuario', body);
+            const errors = [{user_password: 'La contraseña es incorrecta'}];
+            return CreateResponse('POST', 'usuario', null, errors);
         }
 
         const loginUser = {
