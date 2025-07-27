@@ -81,11 +81,11 @@ POST http://localhost:3048/users/register
 Content-Type: application/json
 
 {
-  "email": "jesi@hola.com",
-  "last_name": "juarez",
+  "email": "jesihola.com",
+  "last_name": "u",
   "name": "jesica",
   "user_name": "jesijesi",
-  "user_password": "lorramones"
+  "user_password": "l"
 }
 
 
@@ -95,8 +95,8 @@ POST http://localhost:3048/users/login
 Content-Type: application/json
 
 {
-  "email": "leonardo_garcia@ramon.com",
-  "user_password": "lorramones"
+  "email": "ivan@prueba.com",
+  "user_password": "loramones"
 }
 
 ### LogOut ### 
@@ -107,11 +107,11 @@ PUT http://localhost:3048/users/1
 Content-Type: application/json
 
 {
-  "user_name": "ibalmer",
-  "name": "Ivan",
-  "last_name": "Balmer",
-  "user_password": "mituca10",
-  "email": "ivan@nuevo.com",
+  "user_name": "mer",
+  "name": "Iv",
+  "last_name": "f",
+  "user_password": "mi10",
+  "email": "ivan@nucom",
   "user_type": "admin"
 }
 

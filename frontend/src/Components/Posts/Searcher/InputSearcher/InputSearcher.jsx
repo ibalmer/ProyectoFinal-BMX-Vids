@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IoSearchSharp } from "react-icons/io5";
-
-import './InputSearcher.css'
 
 export function InputSearcher() {
   const [input, setInput] = useState("");
@@ -19,13 +16,12 @@ export function InputSearcher() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-center width-100 m-inline-2 gap-1">
       <input
-        className="searcher-input concrete-input"
+        className="height-content concrete-input"
         type="text"
         placeholder="Buscar posts..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
-      {/* <button className="street-blue-button" type="submit" title='Buscar'><IoSearchSharp className="size-2 flex flex-center align-center"/></button> */}
     </form>
   );
 }

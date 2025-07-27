@@ -1,11 +1,34 @@
-export const CreateResponse = (method, resourse, data, total = null) => {
+const formatValidationErrors = (zodError) => {
+    const errors = [];
+    if (zodError.errors) {
+        zodError.errors.forEach((error) => {
+            console.log(error)
+            const field = error.path.join(".");
+            errors.push({ [field]: error.message });
+        });
+    }
+    return errors;
+};
+
+export const CreateResponse = (
+    method,
+    resource,
+    data,
+    validationErrors = null,
+    total=null
+) => {
     let response;
     let errors = [];
+
+    // Process validation errors if they exist
+    if (validationErrors) {
+        errors = formatValidationErrors(validationErrors);
+    }
 
     switch (method) {
         case 'GET':
             if (!data || data.length <= 0) {
-                errors.push(`No se puede mostrar ${resourse}`);
+                errors.push(`No se puede mostrar ${resource}`);
                 data = [];
             }
             response = {
@@ -17,79 +40,84 @@ export const CreateResponse = (method, resourse, data, total = null) => {
             };
             break;
 
-
-        case 'POST':  
-            response = {
-                status: data.status,
-                code: data.code,
-                data: data.data,
-                errors: data.errors
+        case 'POST':
+            console.log('data create response:', data)
+            // If there are validation errors, return bad request
+            if (validationErrors) {
+                response = {
+                    status: 'bad request',
+                    code: 400,
+                    data: null,
+                    errors
+                };
+            } else {
+                response = {
+                    status: data.status,
+                    code: data.code,
+                    data: data.data,
+                    errors: data.errors
+                };
             }
-
+            console.log('response createresponse:', response)
             break;
+
         case 'PUT':
-
-            if (data === null) {
-
+            // If there are validation errors, return bad request
+            if (validationErrors) {
                 response = {
                     status: 'bad request',
                     code: 400,
                     data: null,
-                    errors: [`No se pudo actualizar el ${resourse}`]
-                }
-                return response;
-            } else if (data[0].changedRows == 0) {
-                errors.push(`Datos ingresados en el ${resourse} duplicados`)
+                    errors
+                };
+            } else {
+                response = {
+                    status: 'ok',
+                    code: 200,
+                    data,
+                    errors,
+                };
             }
-
-            response = {
-                status: data[0].affectedRows == 0 || data[0].changedRows == 0 ? 'bad request' : 'ok',
-                code: data[0].affectedRows == 0 || data[0].changedRows == 0 ? 400 : 200,
-                data,
-                errors,
-            }
-
             break;
+
         case 'PATCH':
-
-            if (data === null) {
-
+            // If there are validation errors, return bad request
+            if (validationErrors) {
                 response = {
                     status: 'bad request',
                     code: 400,
                     data: null,
-                    errors: [`No se pudo modificar el ${resourse}`]
-                }
-                return response;
-            } else if (data.changedRows == 0) {
-                errors.push(`Datos ingresados en el ${resourse} duplicados`)
+                    errors
+                };
+            } else {
+                response = {
+                    status: 'transformation applied',
+                    code: 214,
+                    data: data,
+                    errors,
+                };
             }
-
-
-
-
-            response = {
-                status: data.affectedRows == 0 || data.changedRows == 0 ? 'bad request' : 'transformation applied',
-                code: data.affectedRows == 0 || data.changedRows == 0 ? 400 : 214,
-                data: data.affectedRows == 0 || data.changedRows == 0 ? null : data,
-                errors,
-            }
-
             break;
 
         case 'DELETE':
-
-            if (data[0].affectedRows == 0) {
-                errors.push(`No se pudo eliminar el ${resourse}`);
+            // If there are validation errors, return bad request
+            if (validationErrors) {
+                response = {
+                    status: 'bad request',
+                    code: 400,
+                    data: null,
+                    errors
+                };
+            } else {
+                response = {
+                    status: 'acepted',
+                    code: 202,
+                    data: data[0],
+                    errors
+                };
             }
-            response = {
-                status: data[0].affectedRows > 0 ? 'acepted' : 'bad request',
-                code: data[0].affectedRows > 0 ? 202 : 400,
-                data: data[0],
-                errors
-            }
-
             break;
+
         default:
             response = {
                 status: 'Method Not Allowed',
@@ -97,7 +125,6 @@ export const CreateResponse = (method, resourse, data, total = null) => {
                 errors: ["metodo no soportado"],
             };
             break;
-
     }
 
     return response;

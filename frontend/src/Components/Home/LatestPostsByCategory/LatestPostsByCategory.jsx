@@ -28,7 +28,7 @@ export function LatestPostsByCategory({ category }) {
     return (
         <div className="flex flex-center align-center border-bottom-3 bc-rust-red column m-top-4 width-100 m-block-2 m-bottom-2 p-block-2">
             <p className="text-coal-black bold size-3 m-bottom-4 capitalize">{category}</p>
-            <div className="flex gap-2 flex-around">
+            <div className="flex gap-2 flex-around wrap">
                 {posts && posts.length > 0 && posts.map((post) => (
                     <>
                     <PostCard key={post.id} post={post} />

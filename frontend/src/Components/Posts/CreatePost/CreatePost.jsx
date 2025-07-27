@@ -9,6 +9,7 @@ import { FaPlus } from "react-icons/fa";
 export function CreatePost({ setShowCreateModal }) {
     const { createPost } = useContext(PostsContext);
     const { userAuthenticated } = useContext(UserContext);
+    const [errors, setErrors] = useState([])
     const navigate = useNavigate();
 
     const [newPost, setNewPost] = useState({
@@ -78,10 +79,6 @@ export function CreatePost({ setShowCreateModal }) {
     const sendData = async (e) => {
         e.preventDefault();
 
-        if (newPost.content.length < 20) {
-            alert("El contenido debe tener al menos 20 caracteres");
-            return;
-        }
         const postToSend = {
             ...newPost,
             author: userAuthenticated.user_name,
@@ -96,8 +93,9 @@ export function CreatePost({ setShowCreateModal }) {
             } else {
                 alert("Post creado pero no se recibió el ID");
             }
-        } catch (error) {
-            console.error("Error al crear el post:", error);
+        } catch (err) {
+            setErrors(err.response.data.errors)
+            console.error("Error al crear el post:", err);
         }
     };
 
@@ -114,29 +112,38 @@ export function CreatePost({ setShowCreateModal }) {
                             placeholder="Título"
                             onChange={handleChange}
                             value={newPost.title}
-                            required
                             className="concrete-input"
                         />
+                        {errors.find(e => e.title) && (
+                            <p className="bold text-alert-red">{errors.find(e => e.title).title}</p>
+                        )}
+
                         <label className="size-2 bold" htmlFor="description">Descripción</label>
                         <textarea
                             name="description"
                             placeholder="Descripción"
-                            rows="4"
+                            rows="2"
                             onChange={handleChange}
-                            value={newPost.description}
-                            required
+                            value={newPost.description}                           
                             className="concrete-input"
                         />
+                        {errors.find(e => e.description) && (
+                            <p className="bold text-alert-red">{errors.find(e => e.description).description}</p>
+                        )}
+
                         <label className="size-2 bold" htmlFor="content">Contenido</label>
                         <textarea
                             name="content"
                             placeholder="Contenido"
-                            rows="4"
+                            rows="3"
                             onChange={handleChange}
-                            value={newPost.content}
-                            required
+                            value={newPost.content}                          
                             className="concrete-input"
                         />
+                        {errors.find(e => e.content) && (
+                            <p className="bold text-alert-red">{errors.find(e => e.content).content}</p>
+                        )}
+
                         <label className="size-2 bold" htmlFor="video_link">Enlace del video (YouTube)</label>
                         <input
                             type="url"
@@ -144,9 +151,12 @@ export function CreatePost({ setShowCreateModal }) {
                             placeholder="Enlace del video (YouTube)"
                             onChange={handleChange}
                             value={newPost.video_link}
-                            required
                             className="concrete-input"
                         />
+                        {errors.find(e => e.video_link) && (
+                            <p className="bold text-alert-red">{errors.find(e => e.video_link).video_link}</p>
+                        )}
+
                         <div className="flex gap-1 column">
                             <div className="flex gap-1">
                                 <label className="size-2 bold" htmlFor="tag">Tag</label>
@@ -162,6 +172,9 @@ export function CreatePost({ setShowCreateModal }) {
                                     <FaPlus /> tag
                                 </button>
                             </div>
+                            {errors.find(e => e.tags) && (
+                                <p className="bold text-alert-red">{errors.find(e => e.tags).tags}</p>
+                            )}
                             <ul className="flex gap-1 wrap">
                                 {newPost.tags
                                     .split(',')
@@ -182,13 +195,14 @@ export function CreatePost({ setShowCreateModal }) {
                                     ))}
                             </ul>
                         </div>
+
                         <div className="flex gap-1">
                             <label className="size-2 bold" htmlFor="type_id">Categoría</label>
                             <select
                                 name="type_id"
                                 value={newPost.type_id}
                                 onChange={handleChange}
-                                required
+                                
                                 className="concrete-input"
                             >
                                 <option value="" disabled className="text-off-white">Seleccionar Categoría</option>
@@ -197,6 +211,10 @@ export function CreatePost({ setShowCreateModal }) {
                                 <option value="3">Event Video</option>
                             </select>
                         </div>
+                        {errors.find(e => e.type_id) && (
+                            <p className="bold text-alert-red">Selecciona una categoria</p>
+                        )}
+
                         <div className="flex gap-1 m-top-2">
                             <button className="street-blue-button width-content" title='Crear Post' type="submit">Crear Post</button>
                             <button
@@ -209,6 +227,7 @@ export function CreatePost({ setShowCreateModal }) {
                             </button>
                         </div>
                     </form>
+
                 ) : (
                     <h2>No tenés permisos para crear un posteo</h2>
                 )}

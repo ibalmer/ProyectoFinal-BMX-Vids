@@ -46,7 +46,6 @@ export function UserProvider({ children }) {
                 console.warn("La respuesta no contiene un Usuario válido:", res.data);
                 return;
             }
-
             return res.data;
         } catch (err) {
             console.error("Error al crear usuario:", err.response?.data || err.message);

@@ -6,13 +6,13 @@ export class PostController {
 
     static async Get(limit = 10, offset = 0) {
         const { posts, total } = await PostModel.Get(limit, offset);
-        return CreateResponse('GET', 'post', posts ?? [], total);
+        return CreateResponse('GET', 'post', posts ?? [],null, total);
     }
 
     static async GetByCategory(category, limit = 10, offset = 0) {
         try {
             const { posts, total } = await PostModel.GetByCategory(category, limit, offset);
-            return CreateResponse('GET', 'post', posts ?? [], total);
+            return CreateResponse('GET', 'post', posts ?? [],null, total);
         } catch (error) {
             console.error('Error al obtener post por categoría:', error);
             return CreateResponse('GET', 'post', [], 0);
@@ -21,7 +21,7 @@ export class PostController {
 
     static async GetByFilter(filter, limit = 10, offset = 0) {
         const { results, total } = await PostModel.GetByFilter(filter, limit, offset);
-        return CreateResponse('GET', 'post', results ?? [], total);
+        return CreateResponse('GET', 'post', results ?? [],null, total);
     }
 
 
@@ -43,15 +43,9 @@ export class PostController {
         const validationBody = postSchema.safeParse(data);
 
         if (!validationBody.success) {
-            const body = {
-                status: 'bad request',
-                code: 400,
-                data: [],
-                errors: 'No se pudo crear el post'
-            }
-            return CreateResponse('POST', 'post', body);
+            return CreateResponse('POST', 'post', null, validationBody.error);
         }
-        
+
         const response = await PostModel.Post(data);
 
         const body = {
@@ -79,7 +73,7 @@ export class PostController {
             Object.keys(bodyPost).every((key, index) => key === Object.keys(newPost)[index]);
 
         if (!validationBody.success || !postCompared) {
-            return CreateResponse('PUT', 'post', null)
+            return CreateResponse('PUT', 'post', null, validationBody.error)
         } else {
             const data = await PostModel.UpdateByID(id, body)
             return CreateResponse('PUT', 'post', data)
@@ -103,7 +97,7 @@ export class PostController {
 
         if (!validationBody.success || !postCompared) {
 
-            return CreateResponse('PATCH', 'post', null)
+            return CreateResponse('PATCH', 'post', null, validationBody.error)
         } else {
             const data = await PostModel.ModifyByID(id, body)
             return CreateResponse('PATCH', 'post', data)

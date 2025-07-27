@@ -1,7 +1,9 @@
 import bcrypt from 'bcrypt';
 import { UserModel } from "../models/user.js"
+import { LoginUserSchema } from '../schemas/loginUser.js';
 import { userSchema } from "../schemas/user.js";
 import { CreateResponse } from "../utils/response.js";
+import { safeParse } from 'zod/v4-mini';
 
 export class UserController {
 
@@ -33,15 +35,8 @@ export class UserController {
     static async Post(data) {
 
         const validationBody = userSchema.safeParse(data);
-        
         if (!validationBody.success) {
-            const body = {
-                status: 'bad request',
-                code: 400,
-                data: [],
-                errors: 'No se pudo crear el usuario. Datos inválidos.'
-            };
-            return CreateResponse('POST', 'usuario', body);
+            return CreateResponse('POST', 'usuario', null, validationBody.error);
         }
 
         try {
@@ -92,26 +87,34 @@ export class UserController {
 
     static async PostLogin(data) {
         const dbUser = await UserModel.GetByEmail(data.email);
+        const validationBody = LoginUserSchema.safeParse(data);
+        console.log('dbuser:', dbUser)
+        console.log('validationBody:', validationBody)
+
+        if (!validationBody.success) {
+            return CreateResponse('POST', 'usuario', null, validationBody.error);
+        };
 
         if (!dbUser || dbUser.length === 0) {
             const body = {
-                status: 'unauthorized',
-                code: 401,
-                data: [],
+                status: 'not found',
+                code: 404,
+                data: null,
                 errors: 'El usuario no existe'
             };
-
             return CreateResponse('POST', 'usuario', body);
         }
+
         const isValid = await bcrypt.compare(data.user_password, dbUser[0].user_password);
+        console.log('isvalid:', isValid)
+
         if (!isValid) {
             const body = {
                 status: 'unauthorized',
                 code: 401,
-                data: [],
+                data: null,
                 errors: 'Contraseña incorrecta'
             };
-
             return CreateResponse('POST', 'usuario', body);
         }
 
@@ -133,8 +136,6 @@ export class UserController {
 
         return CreateResponse('POST', 'usuario', body);
     }
-
-
     static async UpdateByID(id, body) {
 
         const user = await UserModel.GetByID(id);
@@ -150,7 +151,7 @@ export class UserController {
             Object.keys(bodyUser).length === Object.keys(newUser).length &&
             Object.keys(bodyUser).every((key, index) => key === Object.keys(newUser)[index]);
         if (!validationBody.success || !userCompared) {
-            return CreateResponse('PUT', 'usuario', null)
+            return CreateResponse('PUT', 'usuario', null, validationBody.error)
         } else {
             const data = await UserModel.UpdateByID(id, body)
             return CreateResponse('PUT', 'usuario', data)
@@ -175,7 +176,7 @@ export class UserController {
 
         if (!validationBody.success || !userCompared) {
 
-            return CreateResponse('PATCH', 'usuario', null)
+            return CreateResponse('PATCH', 'usuario', null, validationBody.error)
         } else {
             const data = await UserModel.ModifyByID(id, body)
             return CreateResponse('PATCH', 'usuario', data)

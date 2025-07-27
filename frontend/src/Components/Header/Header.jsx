@@ -3,20 +3,20 @@ import { useContext, useEffect, useState } from "react";
 import { InputSearcher } from '../Posts/Searcher/InputSearcher/InputSearcher';
 import { Login } from "../Users/Login/Login";
 import { UserContext } from "../../Providers/Users/UserContext";
+import { IoMenu, IoClose, IoSearchSharp } from "react-icons/io5";
 import { CreatePost } from "../Posts/CreatePost/CreatePost";
 import { Register } from "../Users/Register/Register";
-import { IoMenu, IoClose, IoSearchSharp } from "react-icons/io5";
 import './header.css';
 
 export function Header() {
-    const { userAuthenticated } = useContext(UserContext);
+
+    const [showCreateModal, setShowCreateModal] = useState(false);
     const location = useLocation();
     const isActive = (pathFragment) => location.pathname === pathFragment;
-    const [showCreateModal, setShowCreateModal] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [showSearcher, setShowSearcher] = useState(false)
-    
-    useEffect(() =>{
+
+    useEffect(() => {
         setShowSearcher(false)
     }, [location])
 
@@ -32,17 +32,17 @@ export function Header() {
         setIsMenuOpen(false);
     }
 
-    const toogleShowSearcher = () =>{
+    const toogleShowSearcher = () => {
         setShowSearcher(prev => !prev)
     }
 
     return (
         <div id="header" className="bg-coal-black flex flex-center align-center column height-content width-100 p-block-2 m-bottom-3">
             <nav className="flex align-center flex-center width-100">
-                <ul className="buttons-nav flex align-center flex-between width-100 gap-2 wrap">
-
-                    <img src="/bmxVidsLogo.svg" alt="Logo BMX VIDS" className="width-100p" />
-
+                <ul className="buttons-nav flex align-center flex-between width-100">
+                    <div className="flex-1">
+                        <img src="/bmxVidsLogo.svg" alt="Logo BMX VIDS" className="width-100p m-right-4" />
+                    </div>
                     <div className="desktop-nav align-center flex-center gap-2">
                         <Link className={`street-link ${isActive('/') ? 'active-street-link' : ''}`} to="/">
                             <h6>Inicio</h6>
@@ -66,53 +66,42 @@ export function Header() {
                         >
                             {isMenuOpen ? <IoClose size={46} /> : <IoMenu size={46} />}
                         </button>
-                        <div>
-                            <button
-                                className="street-blue-button height-content"
-                                type="button"
-                                onClick={toogleShowSearcher}
-                                title='Buscar'>
-                                <IoSearchSharp size={18} className="flex flex-center align-center" />
-                            </button>
-                        </div>
-                        <div className="flex align-end flex-center gap-2 column">
-                            {userAuthenticated.user_type === 'admin' && (
-
-                                <button
-                                    onClick={() => handleCreateClick('post')}
-                                    className='street-blue-button'>
-                                    Crear Post
-                                </button>
-
-                            )}
-                            {userAuthenticated.user_type === 'invitado' && (
-
-                                <button
-                                    onClick={() => handleCreateClick('account')}
-                                    className='street-blue-button'>
-                                    Registrarse
-                                </button>
-
-                            )}
-                            <Login />
-                        </div>
+                    </div>
+                    <div className="flex flex-1 gap-2 align-end column">
+                        <Login setShowCreateModal={setShowCreateModal}/>
+                        <button
+                            className="street-blue-button height-content"
+                            type="button"
+                            onClick={toogleShowSearcher}
+                            title='Buscar'>
+                            <IoSearchSharp size={18} className="flex flex-center align-center" />
+                        </button>
                     </div>
                 </ul>
                 <div className={`hamburger-menu ${isMenuOpen ? 'hamburger-menu-open' : ''}`}>
                     <ul className="hamburger-menu-list">
-                        <Link className={`hamburger-menu-item ${isActive('/') ? 'active' : ''}`} to="/" onClick={closeMenu}>
-                            <h6>Inicio</h6>
-                        </Link>
-                        <Link className={`hamburger-menu-item ${isActive('/full%20videos') ? 'active' : ''}`} to="/full videos" onClick={closeMenu}>
-                            <h6>Full Videos</h6>
-                        </Link>
-                        <Link className={`hamburger-menu-item ${isActive('/web%20videos') ? 'active' : ''}`} to="/web videos" onClick={closeMenu}>
-                            <h6>Web Videos</h6>
-                        </Link>
-                        <Link className={`hamburger-menu-item ${isActive('/event%20videos') ? 'active' : ''}`} to="/event videos" onClick={closeMenu}>
-                            <h6>Event Videos</h6>
-                        </Link>
+                        <li className={`hamburger-menu-item ${isActive('/') ? 'active' : ''}`}>
+                            <Link to="/" onClick={closeMenu}>
+                                <h6>Inicio</h6>
+                            </Link>
+                        </li>
+                        <li className={`hamburger-menu-item ${isActive('/full%20videos') ? 'active' : ''}`}>
+                            <Link to="/full videos" onClick={closeMenu}>
+                                <h6>Full Videos</h6>
+                            </Link>
+                        </li>
+                        <li className={`hamburger-menu-item ${isActive('/web%20videos') ? 'active' : ''}`}>
+                            <Link to="/web videos" onClick={closeMenu}>
+                                <h6>Web Videos</h6>
+                            </Link>
+                        </li>
+                        <li className={`hamburger-menu-item ${isActive('/event%20videos') ? 'active' : ''}`}>
+                            <Link to="/event videos" onClick={closeMenu}>
+                                <h6>Event Videos</h6>
+                            </Link>
+                        </li>
                     </ul>
+
                 </div>
                 {isMenuOpen && (
                     <div
@@ -122,7 +111,9 @@ export function Header() {
                     ></div>
                 )}
             </nav>
-
+            <div className={`m-top-2 align-center flex-center width-100 height-100 ${showSearcher ? 'show-searcher' : 'searcher-hidden'}`}>
+                <InputSearcher />
+            </div>
             {showCreateModal === 'post' && (
                 <CreatePost setShowCreateModal={setShowCreateModal} />
             )}
@@ -130,10 +121,6 @@ export function Header() {
             {showCreateModal === 'account' && (
                 <Register setShowCreateModal={setShowCreateModal} />
             )}
-
-            <div className={`m-top-2 align-center flex-center width-100 height-100 ${showSearcher ? 'show-searcher' : 'searcher-hidden'}`}>
-                <InputSearcher />
-            </div>
         </div>
     );
 }

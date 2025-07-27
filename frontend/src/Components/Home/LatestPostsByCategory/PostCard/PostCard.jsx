@@ -9,7 +9,7 @@ export function PostCard({ post }) {
     );
 
     return (
-        <Link to={`/post/${post.id}`} className="width-20">
+        <Link to={`/post/${post.id}`} className="post-card">
             <img
                 className="ratio-16-9 width-100"
                 src={thumbnailURL}  // Usa el del hook

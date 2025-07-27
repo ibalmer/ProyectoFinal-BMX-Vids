@@ -5,8 +5,7 @@ import { ConfirmAlert } from "../../ConfirmAlert/ConfirmAlert";
 
 
 export function Register({ setShowCreateModal }) {
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState([]);
     const [registerAlert, setRegisterAlert] = useState(false);
     const [registerUser, setRegisterUser] = useState({
         user_name: '',
@@ -25,7 +24,6 @@ export function Register({ setShowCreateModal }) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (error) setError('');
         setRegisterUser(prev => ({
             ...prev,
             [name]: value
@@ -41,11 +39,6 @@ export function Register({ setShowCreateModal }) {
 
     const sendData = async (e) => {
         e.preventDefault();
-        if (loading) return;
-
-        setLoading(true);
-        setError('');
-
         try {
             const response = await createUser(registerUser);
             setUserLogin({
@@ -54,10 +47,11 @@ export function Register({ setShowCreateModal }) {
             });
             setRegisterAlert(true);
         } catch (err) {
+            setErrors(err.response.data.errors)
             console.error('Error al crear el usuario:', err);
-            setError(err.response?.data?.errors || 'Error al crear el usuario');
+
         } finally {
-            setLoading(false);
+
         }
     };
 
@@ -74,14 +68,13 @@ export function Register({ setShowCreateModal }) {
             });
         } catch (err) {
             console.error('Error en login:', err);
-            setError(err.response?.data?.errors || 'Error al iniciar sesión');
         }
     };
 
     return (
         <section className="modal-overlay">
             <div className="edit-box">
-                <h2>Crear cuenta</h2>
+                <h2 className="width-100 text-center">Crear cuenta</h2>
                 {userAuthenticated.user_type !== 'invitado' ? (
                     <h2 className="size-5 bold">Ya iniciaste sesión</h2>
                 ) : (
@@ -94,9 +87,10 @@ export function Register({ setShowCreateModal }) {
                             value={registerUser.user_name}
                             placeholder="Nombre de usuario"
                             onChange={handleChange}
-                            disabled={loading}
-                            required
                         />
+                        {errors.find(e => e.user_name) && (
+                            <p className="bold text-alert-red">{errors.find(e => e.user_name).user_name}</p>
+                        )}
 
                         <label className="size-2 bold" htmlFor="name">Nombre</label>
                         <input
@@ -106,9 +100,10 @@ export function Register({ setShowCreateModal }) {
                             value={registerUser.name}
                             placeholder="Nombre"
                             onChange={handleChange}
-                            disabled={loading}
-                            required
                         />
+                        {errors.find(e => e.name) && (
+                            <p className="bold text-alert-red">{errors.find(e => e.name).name}</p>
+                        )}
 
                         <label className="size-2 bold" htmlFor="last_name">Apellido</label>
                         <input
@@ -118,20 +113,24 @@ export function Register({ setShowCreateModal }) {
                             value={registerUser.last_name}
                             placeholder="Apellido"
                             onChange={handleChange}
-                            disabled={loading}
-                            required
                         />
+                        {errors.find(e => e.last_name) && (
+                            <p className="bold text-alert-red">{errors.find(e => e.last_name).last_name}</p>
+                        )}
+
                         <label className="size-2 bold" htmlFor="email">Email</label>
                         <input
                             className="concrete-input"
-                            type="email"
+                            type="text"
                             name="email"
                             value={registerUser.email}
                             placeholder="Email"
                             onChange={handleChange}
-                            disabled={loading}
-                            required
                         />
+                        {errors.find(e => e.email) && (
+                            <p className="bold text-alert-red">{errors.find(e => e.email).email}</p>
+                        )}
+
                         <label className="size-2 bold" htmlFor="user_password">Contraseña</label>
                         <input
                             className="concrete-input"
@@ -140,17 +139,14 @@ export function Register({ setShowCreateModal }) {
                             value={registerUser.user_password}
                             placeholder="Contraseña"
                             onChange={handleChange}
-                            disabled={loading}
-                            required
                         />
-                        {error && (
-                            <div className="text-danger size-3">
-                                {error}
-                            </div>
+                        {errors.find(e => e.user_password) && (
+                            <p className="bold text-alert-red">{errors.find(e => e.user_password).user_password}</p>
                         )}
+
                         <div className="flex gap-1 m-top-2">
-                            <button className="street-blue-button width-content" type="submit" disabled={loading}>
-                                {loading ? 'Registrando...' : 'Registrarse'}
+                            <button className="street-blue-button width-content" type="submit">
+                                Registrarse
                             </button>
                             <button
                                 type="button"
@@ -162,6 +158,7 @@ export function Register({ setShowCreateModal }) {
                             </button>
                         </div>
                     </form>
+
                 )}
             </div>
             {registerAlert && (

@@ -9,6 +9,7 @@ export function ChangePassword({ user, cancel }) {
         new_password: "",
         re_password: "",
     });
+    const [errors, setErrors] = useState([])
     const [message, setMessage] = useState('');
 
     const handleChange = (e) => {
@@ -16,36 +17,46 @@ export function ChangePassword({ user, cancel }) {
         setPasswords(prev => ({ ...prev, [name]: value }));
     };
 
-const sendData = () => {
-    console.log('1. Iniciando sendData...');
-    
-    validatePassword(user.email, passwords.old_password)
-        .then(result => {
-            console.log('2. validatePassword resolvió:', result);
-            
-            if (!result) {
-                console.log('3. Contraseña incorrecta');
-                return; // Esto sale del .then(), no de sendData
-            }
-            
-            if (passwords.new_password !== passwords.re_password) {
-                console.log('4. Las contraseñas no coinciden');
-                return;
-            }
-    modifyUserById({user_password: passwords.new_password},user.id)
-    setMessage(true)
-            
-        })
-        .catch(error => {
-            console.log('3. validatePassword falló con error:', error);
-        });
-    
-    console.log('4. Código después de validatePassword (aparece inmediatamente)');
-};
+    const sendData = () => {
+        console.log('1. Iniciando sendData...');
 
-const handleCloseMessage = () =>{
-    setMessage(false)
-}
+        validatePassword(user.email, passwords.old_password)
+            .then(result => {
+                console.log('2. validatePassword resolvió:', result);
+
+                const newErrors = [];
+
+                if (!result) {
+                    newErrors.push({ old_password: 'Contraseña incorrecta' });
+                }
+
+                if (passwords.new_password.length < 8 || passwords.new_password.length > 20) {
+                    newErrors.push({ new_password: 'La nueva contraseña debe tener entre 8 y 20 caracteres' });
+                }
+
+                if (passwords.new_password !== passwords.re_password) {
+                    newErrors.push({ new_password: 'Las contraseñas no coinciden.' });
+                }
+
+                if (newErrors.length > 0) {
+                    setErrors(newErrors);
+                    console.log('Errores:', newErrors);
+                    return;
+                }
+
+                modifyUserById({ user_password: passwords.new_password }, user.id);
+                setErrors([])
+                setMessage(true);
+            })
+            .catch(error => {
+                console.log('3. validatePassword falló con error:', error);
+            });
+
+    };
+
+    const handleCloseMessage = () => {
+        setMessage(false)
+    }
 
     return (
         <section className="modal-overlay">
@@ -61,6 +72,9 @@ const handleCloseMessage = () =>{
                         placeholder="Tu Contraseña"
                         onChange={handleChange}
                     />
+                    {errors.find(e => e.old_password) && (
+                        <p className="bold text-alert-red">{errors.find(e => e.old_password).old_password}</p>
+                    )}
                     <label className="size-2 bold" htmlFor="new_password">Nueva Contraseña</label>
                     <input
                         className="concrete-input"
@@ -70,6 +84,9 @@ const handleCloseMessage = () =>{
                         placeholder="Nueva Contraseña"
                         onChange={handleChange}
                     />
+                    {errors.find(e => e.new_password) && (
+                        <p className="bold text-alert-red">{errors.find(e => e.new_password).new_password}</p>
+                    )}
                     <label className="size-2 bold" htmlFor="re_password">Repetir Contraseña</label>
                     <input
                         className="concrete-input"
@@ -83,9 +100,17 @@ const handleCloseMessage = () =>{
                     <button onClick={cancel} className="rust-button" type="button">Cancelar</button>
                 </form>
             </div>
-            {message &&(
-                <PopupMessage message={'Tu contraseña ha sido cambiada!!!'} closeMessage={handleCloseMessage}/>
+            {/*que se cierren los modales*/}
+            {message && (
+                <PopupMessage
+                    message={'Tu contraseña ha sido cambiada!!!'}
+                    closeMessage={() => {
+                        handleCloseMessage();
+                        cancel();
+                    }}
+                />
             )}
+
         </section>
     );
 }

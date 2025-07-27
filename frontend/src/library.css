@@ -1,3 +1,4 @@
+html{ min-width: 350px;}
 * {
     margin: 0;
     padding: 0;
@@ -9,6 +10,7 @@
 
 body {
     height: 100%;
+    min-width: 350px;
     min-height: 100vh;
 }
 
@@ -20,6 +22,10 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: var(--white);
+}
+
+textarea {
+  resize: none;
 }
 
 input {
@@ -195,6 +201,10 @@ blockquote {
 
 .text-rust-red {
     color: var(--rust-red);
+}
+
+.text-alert-red{
+    color:var(--alert-red)
 }
 
 .text-dirt-tan {
@@ -980,6 +990,10 @@ blockquote {
     text-align: center;
 }
 
+.text-wrap{
+    text-wrap: wrap;
+}
+
 .wrap {
     flex-wrap: wrap;
 }
@@ -1395,6 +1409,7 @@ blockquote {
     border-radius: var(--radius-1);
     text-align: center;
     width: fit-content;
+    min-width: 350px;
     justify-self: center;
     position: absolute;
     top: 50%;
@@ -1432,11 +1447,17 @@ blockquote {
     right: 50%;
     top: 50%;
     z-index: 10;
-    width: max-content;
-    min-width: 280px;
+    width: 50%;
+    min-width: 350px;
     transition: opacity 0.3s ease, transform 0.3s ease;
     opacity: 1;
     transform: translateX(50%) translateY(-50%);
+}
+.edit-box p {text-wrap: wrap;}
+
+.post-card{
+    max-width: 20%;
+    min-width: 150px;
 }
 
 .iframe-content {
@@ -1488,12 +1509,6 @@ blockquote {
     }
 }
 
-@media (max-width: 480px) {
-
-    .street-blue-button,
-    .rust-button {
-        font-size: var(--size-mini);
-        padding: var(--distance-1);
-        letter-spacing: 0px;
-    }
+@media (max-width: 780px) {
+    .carrousel-selected{ display: none;}
 }

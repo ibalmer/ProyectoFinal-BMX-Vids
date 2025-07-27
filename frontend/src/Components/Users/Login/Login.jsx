@@ -7,11 +7,13 @@ import { MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import { BsGearWide } from "react-icons/bs";
+import { IoCreateSharp } from "react-icons/io5";
+import { MdFormatListBulletedAdd } from "react-icons/md";
 
 import './Login.css'
 import { Profile } from "../Profile/Profile";
 
-export function Login() {
+export function Login({ setShowCreateModal }) {
     const { loginUser, userAuthenticated, logOutUser } = useContext(UserContext);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -180,11 +182,15 @@ export function Login() {
                                                 {error}
                                             </div>
                                         )}
-                                        <div className="flex flex-center gap-2 m-top-4">
+                                        <div className="flex flex-center column align-center gap-2 m-top-4">
+                                            <button className="rust-button flex flex-center align-center gap-1" type="button" onClick={() => setShowCreateModal('account')}>
+                                                <MdFormatListBulletedAdd />Registrarse
+                                            </button>
                                             <button className="street-blue-button flex flex-center align-center gap-1" type="submit" disabled={loading}>
                                                 {loading ? 'Iniciando sesión...' : <><LuLogIn />Iniciar sesion</>}
                                             </button>
                                         </div>
+
                                     </form>
                                 </>
                             )
@@ -198,6 +204,11 @@ export function Login() {
                                         <button className="concrete-gray-button flex flex-center align-center width-content" type="button" onClick={() => navigate('/favorites')} >
                                             <LuStar />Favoritos
                                         </button>
+                                        {userAuthenticated.user_type === 'admin' && (
+                                            <button className="concrete-gray-button flex flex-center align-center width-content" type="button" onClick={() => setShowCreateModal('post')} >
+                                                <IoCreateSharp />Crear Post
+                                            </button>
+                                        )}
                                         <div className="flex flex-center gap-2 m-top-4">
                                             <button className="street-blue-button flex flex-center align-center gap-1" type="button" onClick={handleLogout} disabled={loading}>
                                                 <LuLogOut />Cerrar sesion
@@ -208,6 +219,7 @@ export function Login() {
                             )
                     }
                 </div>
+
             )}
             {showProfileModal && (
                 <Profile setShowProfileModal={setShowProfileModal} user={userAuthenticated} />

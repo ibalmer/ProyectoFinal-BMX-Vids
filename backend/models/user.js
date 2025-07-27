@@ -88,13 +88,16 @@ export class UserModel {
     static async GetByEmail(email) {
         try {
             const [user] = await connection.query('SELECT * FROM user WHERE email = ?', [email])
+            console.log('user del modelo:' ,user)
             return user;
 
         } catch (error) {
+            console.log('el error del modelo')
             console.error('Error al cargar el usuario:', error);
-            throw error;
+            return;
         }
     }
+
 
     static async Post(body) {
 
@@ -144,24 +147,24 @@ export class UserModel {
         }
     }
 
-static async ModifyByID(id, body) {
+    static async ModifyByID(id, body) {
 
-    if (body.user_password) {
-        const saltRounds = parseInt(process.env.BCRYPTROUNDS);
-        const hashedPassword = await bcrypt.hash(body.user_password, saltRounds);
-        body.user_password = hashedPassword;
+        if (body.user_password) {
+            const saltRounds = parseInt(process.env.BCRYPTROUNDS);
+            const hashedPassword = await bcrypt.hash(body.user_password, saltRounds);
+            body.user_password = hashedPassword;
+        }
+
+        const keys = Object.keys(body);
+        const values = Object.values(body);
+
+        const fields = keys.map(key => `${key} = ?`).join(", ");
+        const query = `UPDATE user SET ${fields} WHERE id = ?`;
+
+        const [result] = await connection.query(query, [...values, id]);
+
+        return result;
     }
-    
-    const keys = Object.keys(body);
-    const values = Object.values(body);
-    
-    const fields = keys.map(key => `${key} = ?`).join(", ");
-    const query = `UPDATE user SET ${fields} WHERE id = ?`;
-
-    const [result] = await connection.query(query, [...values, id]);
-
-    return result;
-}
 
 
     static async DeleteByID(id) {

@@ -96,7 +96,7 @@ export function CreatePost({ setShowCreateModal }) {
             <div className="edit-box">
                 <h2>Crear Post</h2>
                 {userAuthenticated.user_type === 'admin' ? (
-                    <form className="flex gap-1 column" onSubmit={sendData}>
+                     <form className="flex gap-1 column" onSubmit={sendData}>
                         <label className="size-2 bold" htmlFor="title">Título</label>
                         <input
                             type="text"

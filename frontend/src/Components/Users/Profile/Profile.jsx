@@ -7,6 +7,7 @@ import { ChangePassword } from "../Login/ChangePassword/ChangePassword";
 export function Profile({ setShowProfileModal, user }) {
 
     const [editProfile, setEditProfile] = useState({});
+    const [errors, setErrors] = useState([]);
     const [showProfileConfirm, setShowProfileConfirm] = useState(false);
     const { modifyUserById } = useContext(UserContext);
     const [showFormChange, setShowFormChange] = useState(false)
@@ -46,7 +47,7 @@ export function Profile({ setShowProfileModal, user }) {
 
         if (Object.keys(modifiedFields).length === 0) {
             setShowProfileConfirm(false);
-            console.log('la quedo aca')
+
             showMessage('Parece que no se cambió nada en el usuario.');
             return;
         }
@@ -56,8 +57,9 @@ export function Profile({ setShowProfileModal, user }) {
             await modifyUserById(modifiedFields, original.id);
             setShowProfileModal(false);
             setShowProfileConfirm(false);
-            navigate(0);
         } catch (err) {
+            setErrors(err.response.data.errors)
+            setShowProfileConfirm(false)
             console.error("Error al modificar el usuario:", err?.response?.data ?? err?.message ?? err);
         }
     };
@@ -84,6 +86,9 @@ export function Profile({ setShowProfileModal, user }) {
                         placeholder="Nombre de usuario"
                         onChange={handleChange}
                     />
+                    {errors.find(e => e.user_name) && (
+                        <p className="bold text-alert-red">{errors.find(e => e.user_name).user_name}</p>
+                    )}
                     <label className="size-2 bold" htmlFor="name">Nombre</label>
                     <input
                         className="concrete-input"
@@ -93,6 +98,9 @@ export function Profile({ setShowProfileModal, user }) {
                         placeholder="Nombre"
                         onChange={handleChange}
                     />
+                    {errors.find(e => e.name) && (
+                        <p className="bold text-alert-red">{errors.find(e => e.name).name}</p>
+                    )}
                     <label className="size-2 bold" htmlFor="last_name">Apellido</label>
                     <input
                         className="concrete-input"
@@ -102,11 +110,14 @@ export function Profile({ setShowProfileModal, user }) {
                         placeholder="Apellido"
                         onChange={handleChange}
                     />
+                    {errors.find(e => e.last_name) && (
+                        <p className="bold text-alert-red">{errors.find(e => e.last_name).last_name}</p>
+                    )}
                     {showFormChange && (
                         <ChangePassword user={user} cancel={handleCloseChangePassword} />
                     )}
                     <div className="flex gap-1 m-top-2 column">
-                        <button onClick={handleShowChangePassword} className="rust-button" type="button">Cambiar Contraseña</button>
+                        <button onClick={handleShowChangePassword} className="rust-button width-content" type="button">Cambiar Contraseña</button>
                         <div className=" flex gap-1">
                             <button className="street-blue-button width-content" type="submit">
                                 Editar perfil
