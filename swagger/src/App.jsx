@@ -1,10 +1,15 @@
+
 import './App.css'
 
 function App() {
   return (
-    <>
-      <h1>Swagger</h1>
-    </>
+    <section>
+      <div>
+        <Tabs />
+        <Content />
+      </div>
+      <Response />
+    </section>
   )
 }
 export default App
