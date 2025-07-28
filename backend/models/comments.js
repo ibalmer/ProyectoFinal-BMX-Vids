@@ -8,11 +8,8 @@ const config = {
     database: 'bmx_vids',
     charset: 'utf8mb4'
 };
-
 const connection = await mysql.createConnection(config);
-
 export class CommentsModel {
-
     static async GetByID(id) {
         const [rows] = await connection.query(
             `SELECT * FROM comment WHERE id = ?`,
@@ -20,7 +17,6 @@ export class CommentsModel {
         );
         return rows;
     }
-
     static async GetByPostID(postID) {
 
         const query = `SELECT 
@@ -37,7 +33,6 @@ export class CommentsModel {
         comment.post_id = ?
         ORDER BY 
         comment.publish_date ASC;`;
-
         try {
             const [comments] = await connection.query(query, [postID])
             return comments;
@@ -46,16 +41,13 @@ export class CommentsModel {
             throw error;
         }
     }
-
     static async Post(body) {
 
         const result = await connection.query(
             `INSERT INTO comment(user_id,post_id,content) VALUES (?,?,?)`, [body.user_id, body.post_id, body.content]
         );
-
         return result;
     }
-
     static async UpdateByID(id, body) {
         const [response] = await connection.query(
             `UPDATE comment 
@@ -67,26 +59,20 @@ export class CommentsModel {
                 id
             ]
         );
-
         if (response.affectedRows === 0)
             return [response];
         else {
             return [response, { id, content: body.content }];
         }
     }
-
     static async ModifyByID(id, body) {
         const keys = Object.keys(body);
         const values = Object.values(body);
-
         const fields = keys.map(key => `${key} = ?`).join(", ");
         const query = `UPDATE comment SET ${fields} WHERE id = ?`;
-
         const [result] = await connection.query(query, [...values, id]);
-
         return result;
     }
-
     static async DeleteByID(id) {
         const [data] = await connection.query('SELECT * FROM comment WHERE id = ?', [id])
         const [comment] = await connection.query('DELETE FROM comment WHERE id = ?', [id])

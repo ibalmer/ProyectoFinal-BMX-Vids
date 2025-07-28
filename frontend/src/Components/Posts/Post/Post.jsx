@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { PostsContext } from "../../../Providers/Post/PostContext";
 import { UserContext } from "../../../Providers/Users/UserContext";
 import { CommentsProvider } from "../../../Providers/Comments/CommentsProvider";
+import { ConfirmAlert } from "../../ConfirmAlert/ConfirmAlert";
+import { EditPost } from "../EditPost/EditPost";
 import { Comments } from "../../Comments/Comments";
 import { MdDelete } from "react-icons/md";
 import { FaEdit, FaRegStar, FaStar } from "react-icons/fa";
 import { IoIosPricetags } from "react-icons/io";
-import { EditPost } from "../EditPost/EditPost";
-import { format } from 'date-fns'
-import { es } from 'date-fns/locale'
-import { ConfirmAlert } from "../../ConfirmAlert/ConfirmAlert";
 
 
 export function Post({onToggleFav}) {
@@ -83,13 +83,9 @@ export function Post({onToggleFav}) {
         }
     };
 
-
-
-
     const handleEditClick = () => {
         setShowEditModal(true);
     };
-
 
     const handleSearchTag = (tag) => {
         navigate(`/search?filter=${tag}`);
@@ -100,7 +96,6 @@ export function Post({onToggleFav}) {
             console.warn("Usuario no autenticado");
             return;
         }
-
         try {
             let stringFavsArray;
             if (favsArray.includes(postId)) {
@@ -116,12 +111,8 @@ export function Post({onToggleFav}) {
             console.error("Error al actualizar favoritos:", error);
         }
     }
-
-
-
     return (
         <section className="flex flex-center align-center column p-2 gap-5">
-
             {userAuthenticated && userAuthenticated.user_type === 'admin' && post && (
                 <div className="flex gap-1 flex-end">
                     <button className="rust-button" onClick={() => handleDeleteClick(post.data[0].id)}>
@@ -133,7 +124,6 @@ export function Post({onToggleFav}) {
                 </div>
             )}
             {post ? (
-
                 <div className="flex column gap-2">
                     <h2 className="post-title text-street-blue">{post.data[0].title}</h2>
                     <h5 className="text-street-blue op-75 size-2">{post.data[0].description}</h5>
@@ -158,7 +148,6 @@ export function Post({onToggleFav}) {
                             </button>
                         )}
                     </div>
-
                     {post.data[0].video_link && (
                         <div className="iframe-content">
                             <iframe
@@ -196,20 +185,15 @@ export function Post({onToggleFav}) {
             ) : (
                 <p>Cargando post...</p>
             )}
-
             {showDeleteConfirm && (
                 <ConfirmAlert question={'Estás seguro de que quieres eliminar este post?'} infoMessage={'Esta acción es permanente y no se puede deshacer.'} confirm={handleConfirmDelete} cancel={handleCancelDelete} />
             )}
-
             {showEditModal && (
                 <EditPost
                     setShowEditModal={setShowEditModal}
                     post={post}
                 />
             )}
-
-
-
         </section>
     );
 }

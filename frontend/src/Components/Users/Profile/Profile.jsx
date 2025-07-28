@@ -3,7 +3,6 @@ import { UserContext } from "../../../Providers/Users/UserContext";
 import { ConfirmAlert } from "../../ConfirmAlert/ConfirmAlert";
 import { ChangePassword } from "../Login/ChangePassword/ChangePassword";
 
-
 export function Profile({ setShowProfileModal, user }) {
 
     const [editProfile, setEditProfile] = useState({});
@@ -51,9 +50,7 @@ export function Profile({ setShowProfileModal, user }) {
             showMessage('Parece que no se cambió nada en el usuario.');
             return;
         }
-
         try {
-            console.log("Enviando a modifyUserById:", modifiedFields, original.id);
             await modifyUserById(modifiedFields, original.id);
             setShowProfileModal(false);
             setShowProfileConfirm(false);

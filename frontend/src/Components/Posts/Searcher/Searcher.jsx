@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { scrollToHeader } from "../../../Utils/scrollToHeader";
 import { PostsContext } from "../../../Providers/Post/PostContext";
 import { PostThumbnail } from "../PostThumbnail/PostThumbnail";
@@ -10,14 +10,11 @@ export function Searcher() {
   const { getPostsByFilters } = useContext(PostsContext);
   const [searchParams] = useSearchParams();
   const filter = searchParams.get("filter");
-
   const [results, setResults] = useState([]);
   const [offset, setOffset] = useState(0);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
-
   const limit = 12;
-
 
   useEffect(() => {
     if (filter) {
@@ -58,9 +55,9 @@ export function Searcher() {
         ) : results.length > 0 ? (
           <>
             {results.length > 0 ? results.map((item) => (
-                <div>
-                  <PostThumbnail post={item} />
-                </div>
+              <div>
+                <PostThumbnail post={item} />
+              </div>
             )) : <h3>No hay resultados.</h3>}
           </>
         ) : (
@@ -78,7 +75,6 @@ export function Searcher() {
             >
               <MdOutlineArrowBackIos className="size-2 flex flex-center align-center" />
             </button>
-
             {Array.from({ length: totalPages }, (_, i) => (
               <button
                 key={i}
@@ -89,7 +85,6 @@ export function Searcher() {
                 {i + 1}
               </button>
             ))}
-
             <button
               onClick={() => setOffset(offset + limit)}
               disabled={offset + limit >= total}

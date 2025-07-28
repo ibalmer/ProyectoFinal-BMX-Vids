@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const commentSchema = z.object({
-  user_id: z.number().int().positive(),       // FK al usuario
-  post_id: z.number().int().positive(),       // FK al post
-  content: z.string().min(1, 'El comentario no puede estar vacío').max(65535), // Tipo TEXT
+  user_id: z.number().int().positive(),   
+  post_id: z.number().int().positive(),   
+  content: z.string().min(1, 'El comentario no puede estar vacío').max(1000, 'El comentario no puede tener más de 1000 caracteres.'),
 });

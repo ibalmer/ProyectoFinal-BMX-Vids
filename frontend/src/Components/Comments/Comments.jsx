@@ -4,12 +4,12 @@ import { CommentsContext } from '../../Providers/Comments/CommentsContext';
 import { UserContext } from '../../Providers/Users/UserContext';
 import { formatDistanceToNow } from 'date-fns';
 import { PopupMessage } from "../PopUpMessage/PopUpMessage";
+import { ConfirmAlert } from "../ConfirmAlert/ConfirmAlert";
 import { es } from 'date-fns/locale';
 import { scrollToHeader } from "../../Utils/scrollToHeader";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import './Comments.css';
-import { ConfirmAlert } from "../ConfirmAlert/ConfirmAlert";
 
 export function Comments({ id }) {
     const { getCommentsByPostID, createComment, deleteCommentByID, modifyCommentById } = useContext(CommentsContext);

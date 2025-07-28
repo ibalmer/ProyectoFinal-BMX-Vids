@@ -11,11 +11,9 @@ export function usePopupMessage(timeout = 4000) {
       }, timeout);
     }
   }, [timeout]);
-
   const hideMessage = useCallback(() => {
     setMessage(null);
   }, []);
-
   return {
     message,
     showMessage,

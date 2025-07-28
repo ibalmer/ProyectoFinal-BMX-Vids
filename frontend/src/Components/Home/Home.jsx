@@ -1,10 +1,10 @@
 import { useEffect, useContext, useState } from "react";
-import { useYouTubeThumbnail } from "../../Hooks/useYouTubeThumbnail";
 import { Link } from "react-router-dom";
 import { PostsContext } from "../../Providers/Post/PostContext";
+import { useYouTubeThumbnail } from "../../Hooks/useYouTubeThumbnail";
+import { LatestPostsByCategory } from "./LatestPostsByCategory/LatestPostsByCategory";
 import { MdOutlineArrowForwardIos, MdOutlineArrowBackIos } from "react-icons/md";
 import './Home.css'
-import { LatestPostsByCategory } from "./LatestPostsByCategory/LatestPostsByCategory";
 
 export function Home() {
     const { posts, getPosts } = useContext(PostsContext);

@@ -2,13 +2,10 @@ import { useState } from "react";
 import { PostsContext } from './PostContext'
 import { AxiosApi } from "../../Utils/axiosApi";
 
-
-
 export function PostsProvider({ children }) {
     const [posts, setPosts] = useState()
     const api = AxiosApi()
     const [loading, setLoading] = useState(true)
-
 
     const getPosts = async ({ limit = 10, offset = 0 }) => {
         try {
@@ -22,7 +19,6 @@ export function PostsProvider({ children }) {
             setLoading(false);
         }
     };
-
     const getPostByParams = async (param) => {
 
         try {
@@ -37,14 +33,12 @@ export function PostsProvider({ children }) {
             const res = await api.get(`/posts/${param}`, {
                 params: { limit, offset }
             });
-            console.log(res)
             return res.data;
         } catch (error) {
             console.error('Error al cargar la categoría:', error);
             return { data: [], total: 0 };
         }
     };
-
     const getPostsByFilters = async (filter, { limit = 10, offset = 0 }) => {
         try {
             const res = await api.get('/posts', {
@@ -56,9 +50,7 @@ export function PostsProvider({ children }) {
             return { data: [], total: 0 };
         }
     };
-
     const createPost = async (newPost) => {
-        console.log(newPost)
         try {
             const res = await api.post("/post", newPost);
 
@@ -76,10 +68,7 @@ export function PostsProvider({ children }) {
     const modifyPostById = async (postData, id) => {
         const isFullUpdate = ["title", "description", "content", "video_link", "tags", "type_id"]
             .every(key => key in postData);
-
         const url = `/post/${id}`
-            
-
         try {
             const res = await api[isFullUpdate ? "put" : "patch"](url, postData);
             if (!res.data || typeof res.data !== "object") {
@@ -92,8 +81,6 @@ export function PostsProvider({ children }) {
             throw err;
         }
     };
-
-
     const deletePostById = async (id) => {
         try {
             const res = await api.delete(`/post/${id}`)
@@ -103,7 +90,6 @@ export function PostsProvider({ children }) {
             console.error('Error al cargar el post:', error)
         }
     };
-
     return (
         <PostsContext.Provider value={{
             posts,

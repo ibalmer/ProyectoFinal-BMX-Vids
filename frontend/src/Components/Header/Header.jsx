@@ -1,11 +1,10 @@
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
 import { InputSearcher } from '../Posts/Searcher/InputSearcher/InputSearcher';
 import { Login } from "../Users/Login/Login";
-import { UserContext } from "../../Providers/Users/UserContext";
-import { IoMenu, IoClose, IoSearchSharp } from "react-icons/io5";
 import { CreatePost } from "../Posts/CreatePost/CreatePost";
 import { Register } from "../Users/Register/Register";
+import { IoMenu, IoClose, IoSearchSharp } from "react-icons/io5";
 import './header.css';
 
 export function Header() {
@@ -19,10 +18,6 @@ export function Header() {
     useEffect(() => {
         setShowSearcher(false)
     }, [location])
-
-    const handleCreateClick = (modal) => {
-        setShowCreateModal(modal);
-    }
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);

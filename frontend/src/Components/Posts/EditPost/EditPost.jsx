@@ -6,8 +6,6 @@ import { PopupMessage } from "../../PopUpMessage/PopUpMessage";
 import { ConfirmAlert } from "../../ConfirmAlert/ConfirmAlert";
 import { IoCloseSharp } from "react-icons/io5";
 
-
-
 export function EditPost({ setShowEditModal, post }) {
 
     const { modifyPostById } = useContext(PostsContext)
@@ -36,10 +34,6 @@ export function EditPost({ setShowEditModal, post }) {
         setShowEditConfirm(false)
     }
 
-    useEffect(() => {
-        console.log(showEditConfirm)
-    }, [showEditConfirm])
-
     const handleAddTag = () => {
         const trimmed = tagInput.trim();
         if (trimmed && !editTags.includes(trimmed)) {
@@ -65,7 +59,6 @@ export function EditPost({ setShowEditModal, post }) {
         if (editForm.type_id && Number(editForm.type_id) !== original.type_id)
             modifiedFields.type_id = Number(editForm.type_id);
 
-
         const currentTags = original.tags?.split(',').map(t => t.trim()).join(',') ?? '';
         const newTags = editTags.join(',');
         if (newTags !== currentTags) modifiedFields.tags = newTags;
@@ -75,9 +68,7 @@ export function EditPost({ setShowEditModal, post }) {
             showMessage('Parece que no se cambió nada en el post.');
             return;
         }
-
         try {
-            console.log("Enviando a modifyPostById:", modifiedFields, original.id);
             await modifyPostById(modifiedFields, original.id);
             setShowEditModal(false);
             setShowEditConfirm(false);
@@ -86,7 +77,6 @@ export function EditPost({ setShowEditModal, post }) {
             console.error("Error al modificar el post:", err?.response?.data ?? err?.message ?? err);
         }
     };
-
     return (
         <div className="modal-overlay">
             <div className="edit-box">
@@ -98,7 +88,6 @@ export function EditPost({ setShowEditModal, post }) {
                         className="concrete-input"
                         onChange={handleEditChange}
                     />
-
                     <textarea
                         name="description"
                         value={editForm.description ?? post.data[0].description}
@@ -106,7 +95,6 @@ export function EditPost({ setShowEditModal, post }) {
                         className="concrete-input"
                         onChange={handleEditChange}
                     />
-
                     <textarea
                         name="content"
                         value={editForm.content ?? post.data[0].content}
@@ -114,14 +102,12 @@ export function EditPost({ setShowEditModal, post }) {
                         className="concrete-input"
                         onChange={handleEditChange}
                     />
-
                     <input
                         name="video_link"
                         value={editForm.video_link ?? post.data[0].video_link}
                         className="concrete-input"
                         onChange={handleEditChange}
                     />
-
                     <div>
                         <label>Tags</label>
                         <div className="flex gap-1">
@@ -141,7 +127,6 @@ export function EditPost({ setShowEditModal, post }) {
                             ))}
                         </ul>
                     </div>
-
                     <select
                         name="type_id"
                         className="concrete-input"
@@ -153,7 +138,6 @@ export function EditPost({ setShowEditModal, post }) {
                         <option value="2">Web Video</option>
                         <option value="3">Event Video</option>
                     </select>
-
                     <div className="flex gap-2 m-top-2">
                         <button type="button" className="street-blue-button" onClick={handleSubmitEdit}>Guardar</button>
                         <button type="button" className="rust-button" onClick={() => setShowEditModal(false)}>Cancelar</button>
@@ -164,9 +148,7 @@ export function EditPost({ setShowEditModal, post }) {
                 <PopupMessage message={errorMessage} closeMessage={hideMessage} />
             )}
             {showEditConfirm && (
-                <>
                     <ConfirmAlert question={'¿Guardar los cambios en este post?'} infoMessage={'Esta acción sobrescribirá la información anterior.'} confirm={handleConfirmEdit} cancel={handleCancelEdit} />
-                </>
             )}
         </div>
     );

@@ -14,8 +14,6 @@ export function UserProvider({ children }) {
         user_type: 'invitado'
     });
 
-    
-
     const getUsers = async ({ limit = 20, offset = 0 }) => {
         try {
             const res = await api.get('/users', {
@@ -28,7 +26,6 @@ export function UserProvider({ children }) {
             setLoading(false);
         }
     };
-
     const getUserById = async (id) => {
         try {
             const res = await api.get(`/users/${id}`);
@@ -37,7 +34,6 @@ export function UserProvider({ children }) {
             console.error('Error al cargar el Usuario:', error);
         }
     };
-
     const createUser = async (newUser) => {
         try {
             const res = await api.post("/users/register", newUser);
@@ -52,7 +48,6 @@ export function UserProvider({ children }) {
             throw err;
         }
     };
-
     const modifyUserById = async (userData, id) => {
         const isFullUserUpdate = [
             "user_name",
@@ -63,11 +58,9 @@ export function UserProvider({ children }) {
             "user_type",
             "favs"
         ].every(key => key in userData);
-        console.log(userData)
         const url = `/users/${id}`;
         try {
             const res = await api[isFullUserUpdate ? "put" : "patch"](url, userData);
-            console.log(res)
             if (!res.data || typeof res.data !== "object") {
                 console.warn("Respuesta no válida:", res.data);
                 return;
@@ -84,16 +77,13 @@ export function UserProvider({ children }) {
             throw err;
         }
     }
-
     const loginUser = async (userLogin) => {
         try {
             const res = await api.post('/users/login', userLogin, {
                 withCredentials: true,
                 timeout: 3000
             });
-            console.log('res provider:', res)
             const user = res.data.data;
-
             if (!user || typeof user !== "object") {
                 console.warn("La respuesta no contiene un Usuario válido:", res.data);
                 return;
@@ -113,31 +103,19 @@ export function UserProvider({ children }) {
             throw err;
         }
     };
-
     const validatePassword = async (email, password) => {
-    console.log('validatePassword iniciando...', { email, password });
-    
     const user = { email, user_password: password };
-    
     try {
         const res = await api.post('/users/validate_password', user, {
             withCredentials: true
         });
-        
-        console.log('Respuesta del servidor:', res.data);
-        const verifyUser = res.data.data;
-        console.log('verifyUser:', verifyUser);
-        console.log('Comparando emails:', verifyUser.email, '===', email);
-        
+        const verifyUser = res.data.data;   
         if (verifyUser.email === email) {
-            console.log('Emails coinciden, retornando true');
             return true;
         } else { 
-            console.log('Emails NO coinciden, retornando false');
             return false; 
         }
     } catch (err) {
-        console.log('Error capturado:', err);
         console.error("Contraseña incorrecta:", err.response?.data || err.message);
         return false;
     }
@@ -156,7 +134,6 @@ export function UserProvider({ children }) {
                 email: userData.data.data[0].email,
                 favs: userData.data.data[0].favs
             }
-
             if (user.id === authUserData.id) {
                 const authUser = {
                     ...user,
@@ -165,39 +142,17 @@ export function UserProvider({ children }) {
                 setUserAuthenticated(authUser);
                 return authUser;
             }
-
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
 
     }
-
-/*     const logOutUser = async () => {
-        console.log('el logou')
-        try {
-            const response = await api.post('/users/closeSession', null, { withCredentials: true });
-
-            if (response.ok) {
-                console.log("¡Sesión cerrada!");
-            }
-        } catch (err) {
-            console.log("Error al cerrar la sesión: ", err);
-        }
-    }
- */
-// En UserProvider.js - Función logOutUser corregida
 const logOutUser = async () => {
-    console.log('Iniciando logout...');
     try {
         const response = await api.post('/users/closeSession', {}, { 
             withCredentials: true 
         });
-
-        // Verificar el status de la respuesta correctamente
         if (response.status === 200 || response.status === 204) {
-            console.log("¡Sesión cerrada exitosamente!");
-            
-            // Resetear el estado del usuario autenticado
             setUserAuthenticated({
                 id: null,
                 user_name: null,
@@ -205,8 +160,7 @@ const logOutUser = async () => {
                 last_name: null,
                 email: null,
                 user_type: 'invitado'
-            });
-            
+            });   
             return true;
         } else {
             console.warn("Respuesta inesperada del servidor:", response.status);
@@ -214,8 +168,6 @@ const logOutUser = async () => {
         }
     } catch (err) {
         console.error("Error al cerrar la sesión:", err.response?.data || err.message);
-        
-        // Incluso si hay error, resetear el estado local
         setUserAuthenticated({
             id: null,
             user_name: null,
@@ -224,7 +176,6 @@ const logOutUser = async () => {
             email: null,
             user_type: 'invitado'
         });
-        
         return false;
     }
 };

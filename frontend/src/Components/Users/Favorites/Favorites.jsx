@@ -14,7 +14,6 @@ export function Favorites() {
             setPosts([]); 
             return;
         }
-
         const favsArray = userAuthenticated.favs
             .split(",")
             .map(id => Number(id.trim()))
@@ -24,7 +23,6 @@ export function Favorites() {
             setPosts([]);
             return;
         }
-
         const fetchAllPosts = async () => {
             const postsData = await Promise.allSettled(
                 favsArray.map(id =>
@@ -34,7 +32,6 @@ export function Favorites() {
                     })
                 )
             );
-
             const cleanData = postsData
                 .filter(result => result.status === "fulfilled" && result.value?.data)
                 .map(result => result.value.data);
@@ -56,8 +53,7 @@ export function Favorites() {
         <section className="flex flex-center align-center column p-5 gap-5">
             <div className="flex flex-center align-center wrap gap-6">
                 {posts.length > 0 ? posts.map((post) => {
-                    const postData = post.data ? post.data[0] : post;
-                    
+                    const postData = post.data ? post.data[0] : post;          
                     return (
                         <PostThumbnail
                             key={postData.id}

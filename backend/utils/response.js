@@ -19,7 +19,6 @@ export const CreateResponse = (
     let response;
     let errors = [];
 
-    // Process validation errors if they exist
     if (validationErrors) {
         errors = formatValidationErrors(validationErrors);
     }
@@ -38,11 +37,7 @@ export const CreateResponse = (
                 ...(total !== null && { total })
             };
             break;
-
         case 'POST':
-            console.log('data create response:', data)
-            console.log('/////EL ULTIMO//////')
-            // If there are validation errors, return bad request
             if (validationErrors) {
                 response = {
                     status: 'bad request',
@@ -59,9 +54,7 @@ export const CreateResponse = (
                 };
             }
             break;
-
         case 'PUT':
-            // If there are validation errors, return bad request
             if (validationErrors) {
                 response = {
                     status: 'bad request',
@@ -78,9 +71,7 @@ export const CreateResponse = (
                 };
             }
             break;
-
         case 'PATCH':
-            // If there are validation errors, return bad request
             if (validationErrors) {
                 response = {
                     status: 'bad request',
@@ -97,9 +88,7 @@ export const CreateResponse = (
                 };
             }
             break;
-
         case 'DELETE':
-            // If there are validation errors, return bad request
             if (validationErrors) {
                 response = {
                     status: 'bad request',
@@ -116,7 +105,6 @@ export const CreateResponse = (
                 };
             }
             break;
-
         default:
             response = {
                 status: 'Method Not Allowed',
@@ -125,6 +113,5 @@ export const CreateResponse = (
             };
             break;
     }
-
     return response;
 };

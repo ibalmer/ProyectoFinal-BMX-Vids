@@ -1,7 +1,6 @@
 import { useYouTubeThumbnail } from "../../../../Hooks/useYouTubeThumbnail"
 import { Link } from "react-router-dom";
 
-
 export function PostCard({ post }) {
     const { thumbnailURL, handleError, handleLoad } = useYouTubeThumbnail(
         post.video_link,

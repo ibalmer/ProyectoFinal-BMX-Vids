@@ -1,4 +1,7 @@
-html{ min-width: 350px;}
+html {
+    min-width: 350px;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -25,7 +28,7 @@ body {
 }
 
 textarea {
-  resize: none;
+    resize: none;
 }
 
 input {
@@ -181,7 +184,8 @@ blockquote {
 .bg-street-blue {
     background-color: var(--street-blue);
 }
-.bg-inherit{
+
+.bg-inherit {
     background-color: inherit;
 }
 
@@ -203,8 +207,8 @@ blockquote {
     color: var(--rust-red);
 }
 
-.text-alert-red{
-    color:var(--alert-red)
+.text-alert-red {
+    color: var(--alert-red)
 }
 
 .text-dirt-tan {
@@ -990,7 +994,7 @@ blockquote {
     text-align: center;
 }
 
-.text-wrap{
+.text-wrap {
     text-wrap: wrap;
 }
 
@@ -1390,7 +1394,8 @@ blockquote {
 .concrete-input::placeholder {
     color: var(--off-white);
 }
-.buttons-nav{
+
+.buttons-nav {
     padding-inline: 5%;
 }
 
@@ -1455,22 +1460,28 @@ blockquote {
     transition: opacity 0.3s ease, transform 0.3s ease;
     opacity: 1;
     transform: translateX(50%) translateY(-50%);
-    max-height: 95vh;
-    overflow-y: scroll;
 }
-.edit-box p {text-wrap: wrap;}
 
-.post-card{
+.create-post {
+    max-height: 95vh;
+    overflow-y: auto;
+}
+
+.edit-box p {
+    text-wrap: wrap;
+}
+
+.post-card {
     max-width: 20%;
     min-width: 150px;
 }
 
 .iframe-content {
-  position: relative;
-  width: 95vw;            
-  max-width: 1280px;      
-  aspect-ratio: 16 / 9;   
-  margin: 0 auto;
+    position: relative;
+    width: 95vw;
+    max-width: 1280px;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
 }
 
 
@@ -1485,7 +1496,8 @@ blockquote {
     text-transform: uppercase !important;
 }
 
-.scale, .scale-9 {
+.scale,
+.scale-9 {
     transition: all .3s ease-in-out;
 }
 
@@ -1493,7 +1505,7 @@ blockquote {
     transform: scale(.75);
 }
 
-.scale-9:hover{
+.scale-9:hover {
     transform: scale(.9);
 }
 
@@ -1522,10 +1534,27 @@ blockquote {
 }
 
 @media (max-width: 780px) {
-    .carrousel-selected{ display: none;}
-    .post-title{font-size: var(--size-6);}
-    .post-content{font-size: var(--size-2);}
-    .comment-content{font-size: var(--size-3);}
-    .comment-title{font-size: var(--size-5);}
-    .latest-title{font-size: var(--size-5);}
+    .carrousel-selected {
+        display: none;
+    }
+
+    .post-title {
+        font-size: var(--size-6);
+    }
+
+    .post-content {
+        font-size: var(--size-2);
+    }
+
+    .comment-content {
+        font-size: var(--size-3);
+    }
+
+    .comment-title {
+        font-size: var(--size-5);
+    }
+
+    .latest-title {
+        font-size: var(--size-5);
+    }
 }

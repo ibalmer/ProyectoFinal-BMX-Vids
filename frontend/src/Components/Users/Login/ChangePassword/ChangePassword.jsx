@@ -18,40 +18,29 @@ export function ChangePassword({ user, cancel }) {
     };
 
     const sendData = () => {
-        console.log('1. Iniciando sendData...');
-
         validatePassword(user.email, passwords.old_password)
             .then(result => {
-                console.log('2. validatePassword resolvió:', result);
-
                 const newErrors = [];
-
                 if (!result) {
                     newErrors.push({ old_password: 'Contraseña incorrecta' });
                 }
-
                 if (passwords.new_password.length < 8 || passwords.new_password.length > 20) {
                     newErrors.push({ new_password: 'La nueva contraseña debe tener entre 8 y 20 caracteres' });
                 }
-
                 if (passwords.new_password !== passwords.re_password) {
                     newErrors.push({ new_password: 'Las contraseñas no coinciden.' });
                 }
-
                 if (newErrors.length > 0) {
                     setErrors(newErrors);
-                    console.log('Errores:', newErrors);
                     return;
                 }
-
                 modifyUserById({ user_password: passwords.new_password }, user.id);
                 setErrors([])
                 setMessage(true);
             })
             .catch(error => {
-                console.log('3. validatePassword falló con error:', error);
+                console.error('ValidatePassword falló con error:', error);
             });
-
     };
 
     const handleCloseMessage = () => {
@@ -111,7 +100,6 @@ export function ChangePassword({ user, cancel }) {
                     }}
                 />
             )}
-
         </section>
     );
 }

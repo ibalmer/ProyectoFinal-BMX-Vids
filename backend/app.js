@@ -23,8 +23,6 @@ const allowedOrigins = ['http://localhost:5173'];
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  console.log(origin)
-  // Si es localhost:5173, permitir todo con credenciales
   if (allowedOrigins.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
     res.header('Access-Control-Allow-Credentials', 'true');
@@ -32,8 +30,6 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     return next();
   }
-
-  // Si es otro origen, permitir solo GET para /post y /posts
   if (
     req.method === 'GET' &&
     (req.path.startsWith('/post') || req.path.startsWith('/posts'))
@@ -43,8 +39,6 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     return next();
   }
-
-  // Si no coincide con lo permitido, bloquear
   res.status(403).json({ error: 'CORS policy: Not allowed by server.' });
 });
 app.get('/', (req, res) => {

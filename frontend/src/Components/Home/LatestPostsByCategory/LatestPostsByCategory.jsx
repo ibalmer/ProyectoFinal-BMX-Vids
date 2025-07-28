@@ -12,7 +12,6 @@ export function LatestPostsByCategory({ category }) {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                console.log('Cargando posts para categoría:', category);
                 const result = await getPostsByParams(category, { limit, offset });
                 setPosts(result.data);
             } catch (error) {

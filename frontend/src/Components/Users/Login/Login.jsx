@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../Providers/Users/UserContext";
+import { Profile } from "../Profile/Profile";
 import { TbShieldLock } from "react-icons/tb";
 import { LuLogIn, LuLogOut, LuUser, LuStar } from "react-icons/lu";
 import { MdOutlineMail } from "react-icons/md";
@@ -9,9 +10,7 @@ import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 import { BsGearWide } from "react-icons/bs";
 import { IoCreateSharp } from "react-icons/io5";
 import { MdFormatListBulletedAdd } from "react-icons/md";
-
 import './Login.css'
-import { Profile } from "../Profile/Profile";
 
 export function Login({ setShowCreateModal }) {
     const { loginUser, userAuthenticated, logOutUser } = useContext(UserContext);
@@ -24,7 +23,6 @@ export function Login({ setShowCreateModal }) {
         user_password: ''
     });
     const [showProfileModal, setShowProfileModal] = useState(false)
-
 
     const loginRef = useRef(null)
 
@@ -45,7 +43,6 @@ export function Login({ setShowCreateModal }) {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [isOpen]);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (error) setError('');
@@ -55,7 +52,6 @@ export function Login({ setShowCreateModal }) {
             [name]: value
         }));
     };
-
     const sendData = async (e) => {
         e.preventDefault();
 
@@ -65,7 +61,6 @@ export function Login({ setShowCreateModal }) {
 
         try {
             await loginUser(userLogin);
-            console.log(userAuthenticated)
             setUserLogin({
                 email: '',
                 user_password: ''
@@ -74,19 +69,9 @@ export function Login({ setShowCreateModal }) {
         } catch (err) {
             console.error('Error en login:', err);
             setError('Usuario o contraseña no válidos.');
-
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleClose = () => {
-        toggleComponent();
-        setError('');
-        setUserLogin({
-            email: '',
-            user_password: ''
-        });
     };
 
     const handleLogout = async () => {
@@ -95,20 +80,14 @@ export function Login({ setShowCreateModal }) {
             const success = await logOutUser();
 
             if (success) {
-                // Cerrar el dropdown
                 setIsOpen(false);
-
-                // Opcional: Navegar a home o recargar
-                // navigate('/'); // O usar esto en lugar de reload
                 window.location.reload();
             } else {
                 console.warn("El logout no se completó correctamente");
-                // Aún así recargar para limpiar el estado
                 window.location.reload();
             }
         } catch (error) {
             console.error("Error durante el logout:", error);
-            // En caso de error, forzar la limpieza del estado
             window.location.reload();
         } finally {
             setLoading(false);
@@ -117,7 +96,6 @@ export function Login({ setShowCreateModal }) {
     const handleShowProfile = () => {
         setShowProfileModal(true)
     };
-
 
     return (
         <div className="relative">
@@ -168,7 +146,6 @@ export function Login({ setShowCreateModal }) {
                                                 aria-label="Contraseña"
                                             />
                                         </div>
-
                                         {error && (
                                             <p className="bold text-alert-red">{error}</p>
                                         )}
@@ -180,7 +157,6 @@ export function Login({ setShowCreateModal }) {
                                                 {loading ? 'Iniciando sesión...' : <><LuLogIn />Iniciar sesion</>}
                                             </button>
                                         </div>
-
                                     </form>
                                 </>
                             )
@@ -209,7 +185,6 @@ export function Login({ setShowCreateModal }) {
                             )
                     }
                 </div>
-
             )}
             {showProfileModal && (
                 <Profile setShowProfileModal={setShowProfileModal} user={userAuthenticated} />

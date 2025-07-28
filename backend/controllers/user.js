@@ -3,22 +3,16 @@ import { UserModel } from "../models/user.js"
 import { LoginUserSchema } from '../schemas/loginUser.js';
 import { userSchema } from "../schemas/user.js";
 import { CreateResponse } from "../utils/response.js";
-import { safeParse } from 'zod/v4-mini';
 
 export class UserController {
-
     static async Get(limit = 10, offset = 0) {
         const { users, total } = await UserModel.Get(limit, offset);
         return CreateResponse('GET', 'usuario', users ?? [], total);
     }
-
-
     static async GetByFilter(filter, limit = 10, offset = 0) {
         const { results, total } = await UserModel.GetByFilter(filter, limit, offset);
         return CreateResponse('GET', 'usuario', results ?? [], total);
     }
-
-
     static async GetByID(id) {
         let response;
         try {
@@ -28,17 +22,13 @@ export class UserController {
             console.error('Error al obtener usuario por ID:', error);
             response = CreateResponse('GET', 'usuario', null)
         }
-
         return response;
     }
-
     static async Post(data) {
-
         const validationBody = userSchema.safeParse(data);
         if (!validationBody.success) {
             return CreateResponse('POST', 'usuario', null, validationBody.error);
         }
-
         try {
             const response = await UserModel.Post(data);
 
@@ -48,11 +38,8 @@ export class UserController {
                 data: response,
                 errors: []
             };
-
             return CreateResponse('POST', 'user', body);
-
         } catch (error) {
-
             if (error.code === 'ER_DUP_ENTRY') {
                 let field = 'dato';
 
@@ -62,7 +49,6 @@ export class UserController {
                 } else if (error.message.includes("'username'")) {
                     field = 'nombre de usuario';
                 }
-
                 const body = {
                     status: 'conflict',
                     code: 409,
@@ -71,8 +57,6 @@ export class UserController {
                 };
                 return CreateResponse('POST', 'usuario', body);
             }
-
-
             console.error('Error al crear usuario:', error);
             const body = {
                 status: 'error',
@@ -83,14 +67,9 @@ export class UserController {
             return CreateResponse('POST', 'usuario', body);
         }
     }
-
-
     static async PostLogin(data) {
         const dbUser = await UserModel.GetByEmail(data.email);
         const validationBody = LoginUserSchema.safeParse(data);
-        console.log('dbuser:', dbUser)
-        console.log('validationBody:', validationBody)
-
         if (!validationBody.success) {
             return CreateResponse('POST', 'usuario', null, validationBody.error);
         };
@@ -99,15 +78,11 @@ export class UserController {
             const errors = [{email: 'El email no existe'}];
             return CreateResponse('POST', 'usuario', null, errors);
         }
-
         const isValid = await bcrypt.compare(data.user_password, dbUser[0].user_password);
-        console.log('isvalid:', isValid)
-
         if (!isValid) {
             const errors = [{user_password: 'La contraseña es incorrecta'}];
             return CreateResponse('POST', 'usuario', null, errors);
         }
-
         const loginUser = {
             id: dbUser[0].id,
             user_name: dbUser[0].user_name,
@@ -116,26 +91,19 @@ export class UserController {
             email: dbUser[0].email,
             user_type: dbUser[0].user_type
         };
-
         const body = {
             status: 'ok',
             code: 200,
             data: loginUser,
             errors: []
         };
-
         return CreateResponse('POST', 'usuario', body);
     }
     static async UpdateByID(id, body) {
-
         const user = await UserModel.GetByID(id);
-
         const bodyUser = user[0];
-
         const newUser = { ...bodyUser, ...body }
-
         const validationBody = userSchema.safeParse(newUser)
-
         const userCompared =
             bodyUser && newUser &&
             Object.keys(bodyUser).length === Object.keys(newUser).length &&
@@ -146,39 +114,27 @@ export class UserController {
             const data = await UserModel.UpdateByID(id, body)
             return CreateResponse('PUT', 'usuario', data)
         }
-
     }
-
     static async ModifyByID(id, body) {
-
         const user = await UserModel.GetByID(id);
         const bodyUser = user[0];
         const newUser = { ...bodyUser, ...body }
         const validationBody = userSchema.safeParse(newUser)
-        console.log(validationBody.success)
-        console.log(bodyUser)
-        console.log(newUser)
-
         const userCompared =
             bodyUser && newUser &&
             Object.keys(bodyUser).length === Object.keys(newUser).length &&
             Object.keys(bodyUser).every((key, index) => key === Object.keys(newUser)[index]);
 
         if (!validationBody.success || !userCompared) {
-
             return CreateResponse('PATCH', 'usuario', null, validationBody.error)
         } else {
             const data = await UserModel.ModifyByID(id, body)
             return CreateResponse('PATCH', 'usuario', data)
         }
-
     }
     static async DeleteByID(id) {
-
         let response;
-
         const data = await UserModel.DeleteByID(id)
-
         return response = CreateResponse('DELETE', 'usuario', data);
     }
 };

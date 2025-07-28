@@ -14,7 +14,6 @@ UserRouter.get('/', async (req, res) => {
     } else {
         response = await UserController.Get(parseInt(limit), parseInt(offset));
     }
-
     res.status(response.code).json(response);
 });
 
@@ -28,8 +27,7 @@ UserRouter.post('/register', async (req, res) => {
 UserRouter.post('/login', async (req, res) => {
     const body = req.body;
     const response = await UserController.PostLogin(body)
-    console.log('response ruta:', response)
-    
+
     if (response.code != 400 && response.code != 404) {
         const user = response.data
         const token = jwt.sign({ id: user.id, user_type: user.user_type }, process.env.SECRET_KEY_JWT, { expiresIn: '72h' });
@@ -48,7 +46,6 @@ UserRouter.post('/login', async (req, res) => {
         };
         res.status(response.code).json(cleanedResponse);
     } else {
-        console.log('llego al else')
         res.status(response.code).json
     }
 
@@ -69,7 +66,6 @@ UserRouter.post('/validate_password', async (req, res) => {
             secure: false,
             maxAge: 1000 * 60 * 60 * 72
         })
-        
         const { user_type, ...cleanedData } = response.data;
         const cleanedResponse = {
             ...response,

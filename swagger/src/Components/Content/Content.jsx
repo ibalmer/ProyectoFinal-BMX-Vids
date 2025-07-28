@@ -43,36 +43,26 @@ export function Content({ post, toggleResponse }) {
     }
     const urlFormat = (baseUrl, pag, filter, cat, id) => {
         let resultUrl = baseUrl || '';
-
-        // Agregar categoría si existe
         if (cat) {
             resultUrl += '/' + cat;
         }
-
-        // Agregar ID si existe
         if (id) {
             resultUrl += '/' + id;
         }
-
-        // Construir query parameters
         const queryParams = [];
 
         if (filter) {
             queryParams.push('filter=' + encodeURIComponent(filter));
         }
-
         if (pag) {
             queryParams.push('limit=10&offset=' + pag);
         }
-
         if (queryParams.length > 0) {
             resultUrl += '?' + queryParams.join('&');
         }
-
         return resultUrl;
     }
 
-    // Función corregida para enviar datos
     const sendData = (pag, filter, cat, id) => {
         const baseUrl = post?.base_url || '';
         const endpointURL = urlFormat(baseUrl, pag, filter, cat, id);

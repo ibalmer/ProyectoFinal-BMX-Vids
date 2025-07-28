@@ -6,7 +6,6 @@ export function CommentsProvider({ children }) {
     const api = AxiosApi();
 
     const getCommentsByPostID = async (id) => {
-
         try {
             const res = await api.get(`comments/post/${id}`)
             return res 
@@ -14,23 +13,17 @@ export function CommentsProvider({ children }) {
             console.error('Error al cargar comentarios:', error)
         }
     };
-
     const createComment = async (newComment) => {
-        console.log(newComment)
         try {
             const res = await api.post('/comments', newComment)
         } catch (error) {
             console.error('Error al publicar el comentario:', error)
         }
     }
-
     const modifyCommentById = async (commentData, id) => {
         const isFullUpdate = ['id', 'content', 'user_id']
             .every(key => key in commentData);
-
         const url = `/comments/${id}`
-
-
         try {
             const res = await api[isFullUpdate ? "put" : "patch"](url, commentData);
             if (!res.data || typeof res.data !== "object") {
@@ -43,8 +36,6 @@ export function CommentsProvider({ children }) {
             throw err;
         }
     };
-
-
     const deleteCommentByID = async (id) => {
         try {
             const res = await api.delete(`/comments/${id}`)
@@ -53,7 +44,6 @@ export function CommentsProvider({ children }) {
             console.error('Error al cargar el post:', error)
         }
     };
-
     return (
         <CommentsContext.Provider value={{
             getCommentsByPostID,

@@ -101,7 +101,7 @@ export function CreatePost({ setShowCreateModal }) {
 
     return (
         <section className="modal-overlay">
-            <div className="edit-box">
+            <div className="edit-box create-post">
                 <h2>Crear Post</h2>
                 {userAuthenticated.user_type === 'admin' ? (
                     <form className="flex gap-1 column" onSubmit={sendData}>
@@ -143,7 +143,6 @@ export function CreatePost({ setShowCreateModal }) {
                         {errors.find(e => e.content) && (
                             <p className="bold text-alert-red">{errors.find(e => e.content).content}</p>
                         )}
-
                         <label className="size-2 bold" htmlFor="video_link">Enlace del video (YouTube)</label>
                         <input
                             type="url"
@@ -156,7 +155,6 @@ export function CreatePost({ setShowCreateModal }) {
                         {errors.find(e => e.video_link) && (
                             <p className="bold text-alert-red">{errors.find(e => e.video_link).video_link}</p>
                         )}
-
                         <div className="flex gap-1 column">
                             <div className="flex gap-1">
                                 <label className="size-2 bold" htmlFor="tag">Tag</label>
@@ -195,7 +193,6 @@ export function CreatePost({ setShowCreateModal }) {
                                     ))}
                             </ul>
                         </div>
-
                         <div className="flex gap-1">
                             <label className="size-2 bold" htmlFor="type_id">Categoría</label>
                             <select
@@ -214,7 +211,6 @@ export function CreatePost({ setShowCreateModal }) {
                         {errors.find(e => e.type_id) && (
                             <p className="bold text-alert-red">Selecciona una categoria</p>
                         )}
-
                         <div className="flex gap-1 m-top-2">
                             <button className="street-blue-button width-content" title='Crear Post' type="submit">Crear Post</button>
                             <button
@@ -227,15 +223,12 @@ export function CreatePost({ setShowCreateModal }) {
                             </button>
                         </div>
                     </form>
-
                 ) : (
                     <h2>No tenés permisos para crear un posteo</h2>
                 )}
             </div>
-
             {postAlert && (
                 <ConfirmAlert question={'Ver post?'} infoMessage={'¡Tu contenido ha sido publicado!'} confirm={handleConfirm} cancel={handleCancel} />
-
             )}
         </section>
     );

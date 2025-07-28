@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const postSchema = z.object({
-  title: z.string({ message: "El título debe ser un string." }).min(20, { message: "El contenido debe tener al menos 6 caracteres." }),
+  title: z.string({ message: "El título debe ser un string." }).min(6, { message: "El contenido debe tener al menos 6 caracteres." }),
 
-  description: z.string({ message: "La descripción debe ser un string." }).min(20, { message: "El contenido debe tener al menos 6 caracteres." }),
+  description: z.string({ message: "La descripción debe ser un string." }).min(6, { message: "El contenido debe tener al menos 6 caracteres." }),
 
   content: z.string().min(20, { message: "El contenido debe tener al menos 20 caracteres." }),
 
@@ -27,7 +27,7 @@ export const postSchema = z.object({
 
   tags: z.string({
     message: "Los tags deben ser un string separados por , .",
-  }).min(2, { message: "El contenido debe tener al menos 2 caracteres." }).optional(),
+  }).min(2, { message: "El tag debe tener al menos 2 caracteres." }).optional(),
 
   author: z.string({ message: "El autor debe ser un string." }),
 

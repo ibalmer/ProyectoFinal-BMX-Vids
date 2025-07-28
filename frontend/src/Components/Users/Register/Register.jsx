@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../Providers/Users/UserContext";
 import { ConfirmAlert } from "../../ConfirmAlert/ConfirmAlert";
 
-
 export function Register({ setShowCreateModal }) {
     const [errors, setErrors] = useState([]);
     const [registerAlert, setRegisterAlert] = useState(false);
@@ -104,7 +103,6 @@ export function Register({ setShowCreateModal }) {
                         {errors.find(e => e.name) && (
                             <p className="bold text-alert-red">{errors.find(e => e.name).name}</p>
                         )}
-
                         <label className="size-2 bold" htmlFor="last_name">Apellido</label>
                         <input
                             className="concrete-input"
@@ -117,7 +115,6 @@ export function Register({ setShowCreateModal }) {
                         {errors.find(e => e.last_name) && (
                             <p className="bold text-alert-red">{errors.find(e => e.last_name).last_name}</p>
                         )}
-
                         <label className="size-2 bold" htmlFor="email">Email</label>
                         <input
                             className="concrete-input"
@@ -130,7 +127,6 @@ export function Register({ setShowCreateModal }) {
                         {errors.find(e => e.email) && (
                             <p className="bold text-alert-red">{errors.find(e => e.email).email}</p>
                         )}
-
                         <label className="size-2 bold" htmlFor="user_password">Contraseña</label>
                         <input
                             className="concrete-input"
@@ -143,7 +139,6 @@ export function Register({ setShowCreateModal }) {
                         {errors.find(e => e.user_password) && (
                             <p className="bold text-alert-red">{errors.find(e => e.user_password).user_password}</p>
                         )}
-
                         <div className="flex gap-1 m-top-2">
                             <button className="street-blue-button width-content" type="submit">
                                 Registrarse

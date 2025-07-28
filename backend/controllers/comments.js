@@ -2,9 +2,7 @@ import { CommentsModel } from "../models/comments.js";
 import { commentSchema } from '../schemas/comments.js';
 import { CreateResponse } from "../utils/response.js";
 
-
 export class CommentsController {
-
     static async GetByID(id) {
         const [rows] = await connection.query(
             `SELECT * FROM comment WHERE id = ?`,
@@ -12,7 +10,6 @@ export class CommentsController {
         );
         return rows;
     }
-
     static async GetByPostID(postID) {
         let response;
         try {
@@ -22,14 +19,10 @@ export class CommentsController {
             console.error('Error al obtener los comentarios', error)
             response = CreateResponse('GET', 'comentarios', null)
         }
-
         return response;
     }
-
     static async Post(data) {
-
         const validationBody = commentSchema.safeParse(data);
-
         if (!validationBody.success) {
             const body = {
                 status: 'bad request',
@@ -39,7 +32,6 @@ export class CommentsController {
             }
             return CreateResponse('POST', 'comentario', body);
         }
-
         const response = await CommentsModel.Post(data);
         const body = {
             status: 'created',
@@ -47,18 +39,13 @@ export class CommentsController {
             data: response,
             errors: []
         }
-
         return CreateResponse('POST', 'comentario', body);
     }
-
     static async UpdateByID(id, body) {
         const comment = await CommentsModel.GetByID(id);
         const bodyComment = comment[0];
-
         const newComment = { ...bodyComment, ...body };
-
         const validationBody = commentSchema.safeParse(newComment);
-
         const commentCompared =
             bodyComment && newComment &&
             Object.keys(bodyComment).length === Object.keys(newComment).length &&
@@ -71,15 +58,11 @@ export class CommentsController {
             return CreateResponse('PUT', 'comentario', data);
         }
     }
-
     static async ModifyByID(id, body) {
         const comment = await CommentsModel.GetByID(id);
         const bodyComment = comment[0];
-
         const newComment = { ...bodyComment, ...body };
-
         const validationBody = commentSchema.safeParse(newComment);
-
         const commentCompared =
             bodyComment && newComment &&
             Object.keys(bodyComment).length === Object.keys(newComment).length &&
@@ -93,11 +76,8 @@ export class CommentsController {
         }
     }
     static async DeleteByID(id) {
-
         let response;
-
         const data = await CommentsModel.DeleteByID(id)
-
         return response = CreateResponse('DELETE', 'comentario', data);
     }
 
