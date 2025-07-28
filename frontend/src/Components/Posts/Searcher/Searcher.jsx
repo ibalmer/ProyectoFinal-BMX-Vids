@@ -58,11 +58,9 @@ export function Searcher() {
         ) : results.length > 0 ? (
           <>
             {results.length > 0 ? results.map((item) => (
-              <Link key={item.id} to={`/post/${item.id}`}>
                 <div>
                   <PostThumbnail post={item} />
                 </div>
-              </Link>
             )) : <h3>No hay resultados.</h3>}
           </>
         ) : (

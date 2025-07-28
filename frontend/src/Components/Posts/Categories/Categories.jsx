@@ -20,7 +20,7 @@ export function Category() {
 
     useEffect(() => {
         scrollToHeader();
-    }, [offset, posts])
+    }, [offset])
 
     useEffect(() => {
         const fetchCategory = async () => {
