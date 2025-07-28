@@ -25,7 +25,7 @@ export function Response({ response }) {
         }
 
         fetchData()
-    }, [response]) // Se ejecuta cada vez que cambia la prop 'response'
+    }, [response])
 
     if (loading) return <pre>Cargando...</pre>
     if (error) return <pre>Error: {error}</pre>

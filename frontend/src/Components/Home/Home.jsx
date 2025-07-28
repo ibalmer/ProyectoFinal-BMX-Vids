@@ -74,7 +74,7 @@ export function Home() {
             {selectedItem && (<h2 className="carrousel-title width-100 bg-coal-black text-center text-warning-yellow">{selectedItem.title}</h2>)}
 
             <section className="flex column flex-center align-center m-top-3 ">
-                <h3 className="border-bottom-3 bc-rust-red">Ultimos Videos</h3>
+                <h3 className="latest-title border-bottom-3 bc-rust-red">Ultimos Videos</h3>
                 <LatestPostsByCategory category={'full videos'} />
                 <LatestPostsByCategory category={'web videos'} />
                 <LatestPostsByCategory category={'event videos'} />

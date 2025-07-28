@@ -138,7 +138,7 @@ export function Comments({ id }) {
 
     return (
         <div className="flex column flex-center align-center gap-3 width-100">
-            <h3>Comentarios</h3>
+            <h3 className="comment-title">Comentarios</h3>
             <form className="flex column flex-center align-center gap-3 width-75" onSubmit={sendData}>
                 <textarea
                     name="content"
@@ -160,8 +160,8 @@ export function Comments({ id }) {
                 {comments?.data?.length > 0 ? (
                     comments.data.map((item) => (
                         <div className="comment-box text-coal-black radius-1 relative m-top-4" key={item.id}>
-                            <h3>{item.user_name}</h3>
-                            <p className="text-street-blue bold size-3 p-block-1">{item.content}</p>
+                            <h3 className="comment-title">{item.user_name}</h3>
+                            <p className="comment-content text-street-blue bold size-3 p-block-1">{item.content}</p>
                             <small className="bold">Comentario de {item.time_ago}</small>
                             {canEditComment(item) && (
                                 <div className="absolute top-0 right-0 m-2 flex gap-1">

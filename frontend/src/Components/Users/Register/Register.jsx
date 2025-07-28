@@ -74,7 +74,7 @@ export function Register({ setShowCreateModal }) {
     return (
         <section className="modal-overlay">
             <div className="edit-box">
-                <h2 className="width-100 text-center">Crear cuenta</h2>
+                <h2 className="width-100">Crear cuenta</h2>
                 {userAuthenticated.user_type !== 'invitado' ? (
                     <h2 className="size-5 bold">Ya iniciaste sesión</h2>
                 ) : (

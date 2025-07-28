@@ -63,42 +63,45 @@ export function Searcher() {
                   <PostThumbnail post={item} />
                 </div>
               </Link>
-            )) : <p>No hay resultados.</p>}
+            )) : <h3>No hay resultados.</h3>}
           </>
         ) : (
-          <p>No se encontraron resultados.</p>
+          <h3>No se encontraron resultados.</h3>
         )}
       </div>
-      <div className="flex gap-2">
-        <button
-          onClick={() => setOffset(offset - limit)}
-          disabled={offset === 0}
-          className='street-blue-button'
-          title='Arterior'
-        >
-          <MdOutlineArrowBackIos className="size-2 flex flex-center align-center" />
-        </button>
+      {offset === 0 && offset + limit >= total ?
+        (null) : (
+          <div className="flex gap-2">
+            <button
+              onClick={() => setOffset(offset - limit)}
+              disabled={offset === 0}
+              className={`street-blue-button ${offset === 0 ? 'op-5 not-allowed' : ''}`}
+              title='Arterior'
+            >
+              <MdOutlineArrowBackIos className="size-2 flex flex-center align-center" />
+            </button>
 
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => handlePageChange(i + 1)}
-            disabled={currentPage === i + 1}
-            className={`size-2 flex flex-center align-center ${currentPage === i + 1 ? 'selected-page' : 'rust-button'}`}
-          >
-            {i + 1}
-          </button>
-        ))}
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => handlePageChange(i + 1)}
+                disabled={currentPage === i + 1}
+                className={`size-2 flex flex-center align-center ${currentPage === i + 1 ? 'selected-page' : 'rust-button'}`}
+              >
+                {i + 1}
+              </button>
+            ))}
 
-        <button
-          onClick={() => setOffset(offset + limit)}
-          disabled={offset + limit >= total}
-          className='street-blue-button'
-          title='Siguiente'
-        >
-          <MdOutlineArrowForwardIos className="size-2 flex flex-center align-center" />
-        </button>
-      </div>
+            <button
+              onClick={() => setOffset(offset + limit)}
+              disabled={offset + limit >= total}
+              className={`street-blue-button ${offset + limit >= total ? 'op-5 not-allowed' : ''}`}
+              title='Siguiente'
+            >
+              <MdOutlineArrowForwardIos className="size-2 flex flex-center align-center" />
+            </button>
+          </div>
+        )}
     </section>
   );
 }

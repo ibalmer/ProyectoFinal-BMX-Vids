@@ -5,8 +5,7 @@ import { UserContext } from "../../../Providers/Users/UserContext";
 import { CommentsProvider } from "../../../Providers/Comments/CommentsProvider";
 import { Comments } from "../../Comments/Comments";
 import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
-import { IoCloseSharp, IoCheckmarkSharp } from "react-icons/io5";
+import { FaEdit, FaRegStar, FaStar } from "react-icons/fa";
 import { IoIosPricetags } from "react-icons/io";
 import { EditPost } from "../EditPost/EditPost";
 import { format } from 'date-fns'
@@ -14,11 +13,11 @@ import { es } from 'date-fns/locale'
 import { ConfirmAlert } from "../../ConfirmAlert/ConfirmAlert";
 
 
-export function Post() {
+export function Post({onToggleFav}) {
     const { param } = useParams();
     const navigate = useNavigate();
     const { getPostByParams, deletePostById } = useContext(PostsContext);
-    const { userAuthenticated } = useContext(UserContext);
+    const { userAuthenticated, modifyUserById } = useContext(UserContext);
 
     const [post, setPost] = useState(null);
     const [postIdToDelete, setPostIdToDelete] = useState(null);
@@ -27,6 +26,7 @@ export function Post() {
     const [showEditModal, setShowEditModal] = useState(false);
 
     const [publishDate, setPublishDate] = useState()
+    const [favsArray, setFavsArray] = useState([])
 
     useEffect(() => {
         const getPost = async () => {
@@ -44,6 +44,18 @@ export function Post() {
         };
         getPost();
     }, [param]);
+
+    useEffect(() => {
+        if (userAuthenticated && userAuthenticated.favs) {
+            const parsedFavs = userAuthenticated.favs
+                .split(",")
+                .map(idStr => Number(idStr.trim()))
+                .filter(id => !isNaN(id) && id > 0);
+            setFavsArray(parsedFavs);
+        } else {
+            setFavsArray([]);
+        }
+    }, [userAuthenticated?.favs]);
 
     const handleDeleteClick = (id) => {
         setPostIdToDelete(id);
@@ -83,7 +95,27 @@ export function Post() {
         navigate(`/search?filter=${tag}`);
     };
 
+    async function toogleFav(postId) {
+        if (!userAuthenticated || !userAuthenticated.id) {
+            console.warn("Usuario no autenticado");
+            return;
+        }
 
+        try {
+            let stringFavsArray;
+            if (favsArray.includes(postId)) {
+                const cleanFavsArray = favsArray.filter(fav => fav !== postId);
+                stringFavsArray = cleanFavsArray.length > 0 ? cleanFavsArray.join(',') : '';
+            } else {
+                const newFavsArray = [...favsArray, postId];
+                stringFavsArray = newFavsArray.join(',')
+            }
+            await modifyUserById({ favs: stringFavsArray }, userAuthenticated.id);
+            onToggleFav?.(postId);
+        } catch (error) {
+            console.error("Error al actualizar favoritos:", error);
+        }
+    }
 
 
 
@@ -101,12 +133,32 @@ export function Post() {
                 </div>
             )}
             {post ? (
+
                 <div className="flex column gap-2">
-                    <h2 className="text-street-blue">{post.data[0].title}</h2>
+                    <h2 className="post-title text-street-blue">{post.data[0].title}</h2>
                     <h5 className="text-street-blue op-75 size-2">{post.data[0].description}</h5>
-                    {publishDate && (
-                        <p className="text-rust-red m-bottom-4 bold capitalize border-bottom-3 p-bottom-4 bc-coal-black">{publishDate}</p>
-                    )}
+                    <div className='flex flex-between align-center m-bottom-4 border-bottom-3 p-bottom-4 bc-coal-black'>
+                        {publishDate && (
+                            <p className="text-rust-red bold capitalize">{publishDate}</p>
+                        )}
+                        {userAuthenticated.user_type != 'invitado' && (
+                            <button
+                                onClick={() => toogleFav(post.data[0].id)}
+                                title={favsArray.includes(post.data[0].id) ?
+                                    "Eliminar de Favoritos" :
+                                    "Agregar a Favoritos"
+                                }
+                                className='scale'
+                            >
+                                {favsArray.includes(post.data[0].id) ? (
+                                    <FaStar className='size-4 text-warning-yellow z-index-1' />
+                                ) : (
+                                    <FaRegStar className='size-4 text-warning-yellow z-index-1' />
+                                )}
+                            </button>
+                        )}
+                    </div>
+
                     {post.data[0].video_link && (
                         <div className="iframe-content">
                             <iframe
@@ -119,7 +171,7 @@ export function Post() {
                             />
                         </div>
                     )}
-                    <h5 className="text-coal-black size-3 m-block-4 border-top-3 p-top-4 bc-coal-black">{post.data[0].content}</h5>
+                    <h5 className="post-content text-coal-black size-3 m-block-4 border-top-3 p-top-4 bc-coal-black">{post.data[0].content}</h5>
                     {post.data[0].tags && (
                         <div className="flex gap-3 m-bottom-4 bold capitalize border-bottom-3 p-bottom-4 bc-coal-black">
                             <IoIosPricetags size={36} className="text-street-blue" />
@@ -146,7 +198,7 @@ export function Post() {
             )}
 
             {showDeleteConfirm && (
-                <ConfirmAlert question={'Estás seguro de que quieres eliminar este post?'} infoMessage={'Esta acción es permanente y no se puede deshacer.'} confirm={handleConfirmDelete} cancel={handleCancelDelete}/>
+                <ConfirmAlert question={'Estás seguro de que quieres eliminar este post?'} infoMessage={'Esta acción es permanente y no se puede deshacer.'} confirm={handleConfirmDelete} cancel={handleCancelDelete} />
             )}
 
             {showEditModal && (

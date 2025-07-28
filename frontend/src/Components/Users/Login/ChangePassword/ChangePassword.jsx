@@ -96,11 +96,12 @@ export function ChangePassword({ user, cancel }) {
                         placeholder="Repetir Contraseña"
                         onChange={handleChange}
                     />
-                    <button className="street-blue-button" type="button" onClick={sendData}>Cambiar Contraseña</button>
-                    <button onClick={cancel} className="rust-button" type="button">Cancelar</button>
+                    <div className="flex column gap-1 m-top-2">
+                        <button className="street-blue-button width-content" type="button" onClick={sendData}>Cambiar Contraseña</button>
+                        <button onClick={cancel} className="rust-button width-content" type="button">Cancelar</button>
+                    </div>
                 </form>
             </div>
-            {/*que se cierren los modales*/}
             {message && (
                 <PopupMessage
                     message={'Tu contraseña ha sido cambiada!!!'}

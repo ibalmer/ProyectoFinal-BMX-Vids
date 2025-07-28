@@ -65,7 +65,7 @@ export function Favorites() {
                             onToggleFav={handleToggleFav}
                         />
                     );
-                }) : <p>No hay resultados.</p>}
+                }) : <div className="text-center"><h3>No hay favoritos.</h3></div>}
             </div>
         </section>
     )

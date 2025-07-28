@@ -86,11 +86,10 @@ export function UserProvider({ children }) {
     }
 
     const loginUser = async (userLogin) => {
-        console.log(userLogin)
         try {
             const res = await api.post('/users/login', userLogin, {
                 withCredentials: true,
-                timeout: 5000 // 5 segundos
+                timeout: 3000
             });
             console.log('res provider:', res)
             const user = res.data.data;

@@ -1,6 +1,5 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { PostsRouter } from './routes/posts.js';
 import { PostRouter } from './routes/post.js';
@@ -20,19 +19,34 @@ app.use(express.json());
 //COKIEPARSER//
 app.use(cookieParser());
 
-app.use(
-  cors({
-    origin: [
-      'http://localhost:3000',
-      'http://192.168.0.36:3000',
-      'http://localhost:5175',
-      'http://localhost:5174',
-      'http://localhost:5173'
-    ],
-    credentials: true
-  })
-);
+const allowedOrigins = ['http://localhost:5173'];
 
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  console.log(origin)
+  // Si es localhost:5173, permitir todo con credenciales
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PATCH,PUT,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    return next();
+  }
+
+  // Si es otro origen, permitir solo GET para /post y /posts
+  if (
+    req.method === 'GET' &&
+    (req.path.startsWith('/post') || req.path.startsWith('/posts'))
+  ) {
+    res.header('Access-Control-Allow-Origin', origin || '*');
+    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    return next();
+  }
+
+  // Si no coincide con lo permitido, bloquear
+  res.status(403).json({ error: 'CORS policy: Not allowed by server.' });
+});
 app.get('/', (req, res) => {
   res.send(`
         <h2>BMX-Vids</h2>

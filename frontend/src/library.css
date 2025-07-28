@@ -1452,6 +1452,8 @@ blockquote {
     transition: opacity 0.3s ease, transform 0.3s ease;
     opacity: 1;
     transform: translateX(50%) translateY(-50%);
+    max-height: 95vh;
+    overflow-y: scroll;
 }
 .edit-box p {text-wrap: wrap;}
 
@@ -1461,11 +1463,13 @@ blockquote {
 }
 
 .iframe-content {
-    position: relative;
-    width: 75vw;
-    padding-top: 56.25%;
-    margin: 0 auto;
+  position: relative;
+  width: 95vw;            
+  max-width: 1280px;      
+  aspect-ratio: 16 / 9;   
+  margin: 0 auto;
 }
+
 
 
 .break-word {
@@ -1478,12 +1482,16 @@ blockquote {
     text-transform: uppercase !important;
 }
 
-.scale {
+.scale, .scale-9 {
     transition: all .3s ease-in-out;
 }
 
 .scale:hover {
     transform: scale(.75);
+}
+
+.scale-9:hover{
+    transform: scale(.9);
 }
 
 .capitalize {
@@ -1502,6 +1510,7 @@ blockquote {
     display: flex !important;
 }
 
+
 /* Media queries para responsive */
 @media (max-width: 945px) {
     .content-section {
@@ -1511,4 +1520,9 @@ blockquote {
 
 @media (max-width: 780px) {
     .carrousel-selected{ display: none;}
+    .post-title{font-size: var(--size-6);}
+    .post-content{font-size: var(--size-2);}
+    .comment-content{font-size: var(--size-3);}
+    .comment-title{font-size: var(--size-5);}
+    .latest-title{font-size: var(--size-5);}
 }

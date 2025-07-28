@@ -145,14 +145,12 @@ export function Login({ setShowCreateModal }) {
                                         <div className="flex flex-center align-center gap-2">
                                             <MdOutlineMail className="size-5 text-dirty-white" />
                                             <input
-                                                type="email"
+                                                type="text"
                                                 name="email"
                                                 value={userLogin.email}
                                                 placeholder="Ingresa tu email"
                                                 onChange={handleChange}
                                                 disabled={loading}
-                                                autoComplete="chupadla"
-                                                required
                                                 className="concrete-input width-100 m-right-1"
                                                 aria-label="Correo electrónico"
                                             />
@@ -166,7 +164,6 @@ export function Login({ setShowCreateModal }) {
                                                 placeholder="Tu contraseña"
                                                 onChange={handleChange}
                                                 disabled={loading}
-                                                required
                                                 className="concrete-input width-100 m-right-1"
                                                 aria-label="Contraseña"
                                             />

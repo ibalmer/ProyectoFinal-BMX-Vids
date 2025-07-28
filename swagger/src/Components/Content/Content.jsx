@@ -101,7 +101,7 @@ export function Content({ post, toggleResponse }) {
                     {post.type === 'posts' && (
                         <div>
                             <label htmlFor="offset">Offset</label>
-                            <form>
+                            <form onSubmit={(e) => e.preventDefault()}>
                                 <input
                                     type="text"
                                     name="offset"
@@ -116,7 +116,7 @@ export function Content({ post, toggleResponse }) {
                     )}
                     {post.type === 'category' && (
                         <div>
-                            <form className="cat-form">
+                            <form className="cat-form" onSubmit={(e) => e.preventDefault()}>
                                 <label htmlFor="cat">Categoría</label>
                                 <select
                                     name="cat"
@@ -145,7 +145,7 @@ export function Content({ post, toggleResponse }) {
                     {post.type === 'filter' && (
                         <div>
                             <label htmlFor="Filtro">Filtro</label>
-                            <form>
+                            <form onSubmit={(e) => e.preventDefault()}>
                                 <input
                                     type="text"
                                     name="filter"
@@ -159,7 +159,7 @@ export function Content({ post, toggleResponse }) {
                     {post.type === 'id' && (
                         <div>
                             <label htmlFor="ID">ID</label>
-                            <form>
+                            <form onSubmit={(e) => e.preventDefault()}>
                                 <input
                                     type="text"
                                     name="id"
