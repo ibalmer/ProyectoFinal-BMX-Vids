@@ -14,7 +14,7 @@ export function InputSearcher() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-center width-100 m-inline-2 gap-1">
+    <form onSubmit={handleSubmit} className="buttons-nav flex flex-center width-100 gap-1">
       <input
         className="height-content concrete-input"
         type="text"

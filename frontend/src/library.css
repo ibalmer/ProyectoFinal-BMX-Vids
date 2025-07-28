@@ -1390,6 +1390,9 @@ blockquote {
 .concrete-input::placeholder {
     color: var(--off-white);
 }
+.buttons-nav{
+    padding-inline: 5%;
+}
 
 .selected-page {
     background-color: var(--warning-yellow);
