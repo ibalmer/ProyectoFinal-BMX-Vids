@@ -10,11 +10,16 @@
   font-style: normal;
 }
 
-body{
-  background-color: black;
+body {
+  background-color: rgb(255, 255, 255);
 }
 
-a:link, a {
-  text-decoration: none; 
+#root {
+  min-height: 100dvh;
+}
+
+a:link,
+a {
+  text-decoration: none;
   color: inherit;
 }

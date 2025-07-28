@@ -1,0 +1,34 @@
+[
+    {
+        "endpoint": " http://localhost:3048/posts",
+        "base_url": "http://localhost:3048/posts",
+        "method": "GET",
+        "title": "Obtener posteos",
+        "desc": "Obtiene todos los posteos con un limit y un offset. Inicialmente el limite es 10 y el offset es 0 en la url base.",
+        "type": "posts"
+    },
+    {
+        "endpoint": " http://localhost:3048/posts/full%20videos",
+        "base_url": "http://localhost:3048/posts",
+        "method": "GET",
+        "title": "Obtener posteos por categoria",
+        "desc": "Obtiene los posteos segun la categoria seleccionada con un limit y un offset. Inicialmente es de 10 el limite y 0 el offset en la url base.",
+        "type": "category"
+    },
+    {
+        "endpoint": " http://localhost:3048/posts?filter=bmxvids",
+        "base_url": "http://localhost:3048/posts",
+        "method": "GET",
+        "title": "Obtener posteos por filtro",
+        "desc": "Obtiene todos los posteos que encuentre por medio de la cadena de texto introducida en el filtro.",
+        "type": "filter"
+    },
+    {
+        "endpoint": " http://localhost:3048/post/1",
+        "base_url": "http://localhost:3048/post",
+        "method": "GET",
+        "title": "Obtener posteo por ID",
+        "desc": "Obtiene un solo posteo a partir de un ID",
+        "type": "id"
+    }
+]
