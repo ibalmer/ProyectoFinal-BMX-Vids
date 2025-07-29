@@ -184,7 +184,7 @@ export function Comments({ id }) {
                         </div>
                     ))
                 ) : (
-                    <p>No hay comentarios en esta publicación.</p>
+                    <h5>No hay comentarios en esta publicación.</h5>
                 )}
             </div>
             {showEditForm && modifyComment && (
